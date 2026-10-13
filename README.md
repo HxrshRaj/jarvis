@@ -1,60 +1,84 @@
 # JARVIS — Personal AI Operating System
 
-An independent, in-progress personal assistant that turns natural-language requests into **bounded, permission-checked,
-verified task workflows**. Inspired by the idea of a fictional assistant; not an official Marvel/Iron Man product.
+An independent personal-assistant project that turns natural-language requests into **bounded, permission-checked, verified
+task workflows**, with memory, document RAG, voice, screenshot understanding and a small ML/deep-learning routing experiment.
+It is inspired by the idea of a fictional assistant and is **not** an official Marvel/Iron Man product.
 Author and owner: Harsh Raj.
 
-> **Status: early checkpoint.** The task engine, tool sandbox, auth, audit trail and a 4-page command center work and are
-> tested. Memory, RAG, voice, vision, LangGraph agents and the ML/PyTorch experiments are **not built yet** — see
-> [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for an honest per-phase status.
+> **Status: first substantial release, with documented gaps.** Everything listed under "What works" was run and tested.
+> Features that need a paid/live model provider are implemented behind provider interfaces and tested with scripted fakes;
+> they have **not** been exercised against a live provider. See [Known limitations](#known-limitations).
 
-## What works today
-- Register/sign in (scrypt password hashing, signed expiring tokens, per-user resource isolation).
-- Submit a request → router label → bounded plan → approval gate → sandboxed execution → deterministic verification → report.
-- Tools: `list_directory`, `read_file`, `search_files`, `calculate_statistics`, `task_history`, `run_command`
-  (allowlist: `git status|diff|log`, `pytest`, `npm test`). Test runners require your approval before anything executes.
-- Cancel (kills a running process), bounded retry (3 attempts/step), idempotent submission, resume after restart, SSE progress.
-- Audit log of logins, plans, approvals, tool executions and cancellations.
-- Optional real LLM planning/answers through any OpenAI-compatible endpoint. **Without a provider JARVIS runs in offline
-  mode: it executes tool tasks but says plainly that it cannot answer open-ended questions.**
+## What works
+- **Command center UI** (dark by default, light theme toggle, responsive) with 11 pages: Command Center, Conversations, Tasks,
+  Knowledge Base, Documents, Code Assistant, Memory, Tools & Permissions, Models & Providers, Evaluation, Security & Audit.
+- **Task engine**: route → bounded plan → validation → approval gate → sandboxed execution → deterministic verification → report.
+  States: pending / awaiting approval / running / succeeded / failed / cancelled / partially completed. Cancel (kills running
+  processes), bounded retries, idempotent submission, resume after restart, audit trail. A non-zero command exit is never
+  reported as plain success.
+- **Tools** (typed, permissioned, audited): list/read/search files, statistics, CSV analysis, task history, document search,
+  memory search/save, allowlisted command runner (`git status|diff|log` direct; `pytest`/`npm test` need approval).
+- **Memory**: explicit saves only, secret refusal, edit/delete/export, global disable switch, separate from chat history.
+- **Document RAG**: PDF/text ingestion, chunking, hybrid BM25 + hashed-embedding retrieval, per-user isolation, delete/re-index,
+  and a **bounded LangGraph** workflow that verifies citations and says so when evidence is missing.
+- **Voice**: push-to-talk (explicit mic permission states, released after each recording), speech-to-text and text-to-speech via
+  provider interfaces, browser-local TTS fallback, mute/volume/stop. No continuous listening, no wake word.
+- **Look at This**: explicit screenshot upload → configured vision model; validated, not stored, uncertainty caveat shown.
+- **ML/DL**: labeled router dataset (synthetic, leakage-controlled), rules baseline vs scikit-learn vs PyTorch, real measured
+  results — the PyTorch model did **not** beat the classical baseline ([docs/ML.md](docs/ML.md)).
+- **Evaluation harness** (deterministic, versioned, stored) and **observability**: structured logs, `/metrics`, provider usage
+  with measured tokens and optional estimated cost.
+- **Ops**: Alembic migrations (drift-tested), Docker Compose (Postgres + backend + frontend) verified, GitHub Actions workflow.
 
-## Quick start (no Docker, no paid services)
-Requires Python 3.11+ and Node 20+.
+## Quick start
+Requires Python 3.11+ and Node 20+ (or just Docker).
 
 ```bash
-# backend  (http://localhost:8000, docs at /docs)
-cd backend
-python -m venv .venv && .venv/Scripts/activate      # Linux/macOS: source .venv/bin/activate
-pip install -e ".[dev]"
-python -m uvicorn app.main:app --port 8000
+# A) Docker (Postgres + migrations + UI)
+cp .env.example .env        # set POSTGRES_PASSWORD and JARVIS_SECRET_KEY
+docker compose up -d --build   # UI http://localhost:3000, API http://localhost:8000/docs
 
-# frontend (http://localhost:3000)
+# B) Local, no Docker (SQLite)
+cd backend && python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]" --extra-index-url https://download.pytorch.org/whl/cpu
+python -m uvicorn app.main:app --port 8000
 cd frontend && npm install && npm run dev
 ```
-Open http://localhost:3000, create an account, and try "run the tests" against the sample project in `workspace/`.
-Tools can only touch `JARVIS_WORKSPACE_ROOT` (default `./workspace`).
+Create an account in the UI and try "run the tests" against the sample project in `workspace/`. Tools can only touch
+`JARVIS_WORKSPACE_ROOT`. Without an LLM provider JARVIS runs in **offline mode** and says so; add a provider in
+[docs/PROVIDERS.md](docs/PROVIDERS.md).
 
-## Enabling a language model
-Copy `.env.example` to `backend/.env`, set `JARVIS_LLM_PROVIDER=openai_compat`, `JARVIS_LLM_API_KEY`, and optionally
-`JARVIS_LLM_BASE_URL` / `JARVIS_LLM_MODEL` (works with OpenAI, Ollama, LM Studio, vLLM). Keys are read from the
-environment only, never stored in the database or returned by the API. *This adapter has not yet been tested against a live provider.*
+## Tests and results (this checkout)
+| Suite | Command | Result |
+|---|---|---|
+| Backend (mocked providers) | `cd backend && python -m pytest -q` | 138 passed, 1 skipped (Windows symlink test) |
+| Frontend unit/component | `cd frontend && npm run lint && npm test` | 21 passed, `tsc` clean |
+| Frontend build | `npm run build` | passes |
+| End-to-end (Playwright, real Docker stack on Postgres) | `E2E_CHANNEL=chrome npx playwright test` | 7 passed |
+| Deterministic evals | `python -m app.services.evals` | see Evaluation page; 1 known failure kept visible |
+| ML experiment | `python -m ml.train` | see [docs/ML.md](docs/ML.md) |
 
-## Tests
-```bash
-cd backend && .venv/Scripts/python -m pytest -q      # 70 passed, 1 skipped (symlink test on Windows)
-cd frontend && npm run lint && npm test && npm run build
-```
-Deterministic tests only; no live LLM calls. Covered: auth, access isolation, path/command sandbox, planner validation,
-prompt-injection and malicious-plan handling, approval/reject/cancel/retry, idempotency, concurrency, recovery, SSE, rate limit.
+The GitHub Actions workflow (`.github/workflows/ci.yml`) mirrors these commands but **has not been run yet** (no push has
+triggered it at the time of writing). Mocked-provider tests are not integration tests of any real provider.
 
-## Security model (summary)
-The LLM never executes anything. The engine validates plans (typed schemas + command allowlist), forces approvals,
-confines file access to the workspace, refuses secrets (`.env`, keys, `.ssh`, `.git`), runs commands without a shell in a
-scrubbed environment with timeouts, and audits every action. Known limits: commands run as your OS user (no container
-sandbox yet — approved test runners execute project code); rate limiting is in-process; the browser stores the session
-token in `localStorage`; no microphone/screen/browser access exists yet.
+## Documentation
+[Architecture](docs/ARCHITECTURE.md) · [Security & privacy](docs/SECURITY.md) · [Tools & permissions](docs/TOOLS.md) ·
+[Memory & RAG](docs/RAG_MEMORY.md) · [ML & deep learning](docs/ML.md) · [Providers & voice/vision](docs/PROVIDERS.md) ·
+[API](docs/API.md) · [Deployment & Docker](docs/DEPLOYMENT.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) ·
+[Implementation plan & status](IMPLEMENTATION_PLAN.md)
 
 ## Known limitations
-Docker/Compose files and PostgreSQL support are **not yet written/verified**; no Alembic migrations (tables are created
-at startup); polling is used by the UI although an SSE endpoint exists; the 8 remaining UI pages, voice, vision, memory,
-RAG, agents and ML work are unimplemented.
+- **No live-provider verification.** The OpenAI-compatible adapter (chat, vision, STT, TTS) is covered by scripted fakes only.
+  No streaming and no native function-calling (plans are validated JSON).
+- **Approved test runners execute project code as the host user**; there is no container/VM sandbox or resource limits yet.
+- Retrieval uses hashed n-gram embeddings + BM25 stored as JSON — **not neural embeddings and not pgvector**. Memory search misses
+  some paraphrases (one known case in the eval suite).
+- **Not implemented:** Redis/Celery (in-process worker pool instead), pgvector, MLflow, OpenTelemetry, browser automation,
+  screen capture/desktop control, wake-word, charts in data analysis, OCR for scanned PDFs, file-writing tools, provider
+  configuration from the UI (read-only; use environment variables), a dedicated "sessions" table (tokens are stateless).
+- Other LangGraph agents from the original brief (Coding, Data Analyst, Research, Memory as separate graph nodes) are realised as
+  deterministic tools plus the engine; only the RAG answer workflow is a LangGraph graph.
+- The UI polls for task progress (an SSE endpoint exists and is tested but unused by the UI).
+- Session token is kept in `localStorage`; rate limiting is in-process; `/metrics` is unauthenticated.
+- The router dataset is synthetic; ML numbers are indicative only and the PyTorch model underperforms the classical baseline.
+- No license file is included; add one deliberately before sharing the code.

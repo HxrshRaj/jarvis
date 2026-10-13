@@ -1,47 +1,45 @@
 # JARVIS — Implementation Plan & Status
 
 Author/owner: Harsh Raj. Independent project; not affiliated with Marvel or Disney.
-Legend: ✅ done and tested · 🟡 partial · ⬜ not started. Nothing is marked done unless it was run and verified.
+Legend: ✅ done, run and tested · 🟡 partial / not verified live · ⬜ not built. Nothing is marked ✅ unless it was executed.
 
-## Architecture (modular monolith)
-
-```
-Next.js UI ──REST/SSE──> FastAPI ──> TaskEngine (thread pool) ──> ToolRegistry ──> sandboxed tools
-                           │              │  planner (LLM or rules) → validate → policy → execute → verify
-                           │              └─ LLMProvider interface (mock | OpenAI-compatible)
-                           └─ SQLAlchemy 2 → SQLite (default) | PostgreSQL
-```
-
-Key rules enforced in code, not prompts:
-1. The model only *proposes* a plan. Every step is validated against the tool's typed input schema and a static
-   `precheck` (command allowlist) before it is stored; invalid plans fall back to a deterministic rule planner.
-2. Tools that run project code (pytest, npm test) always pause in `awaiting_approval`; nothing runs until the user approves.
-3. Tool outputs are validated against output schemas; task status (`succeeded/failed/partially_completed`) is computed
-   from recorded step results, and the summary is built deterministically from them — never from model prose.
-4. All paths are confined to `JARVIS_WORKSPACE_ROOT`; secrets/keys/.git are refused; commands use argv (no shell), an
-   allowlist, a scrubbed environment, timeouts and cancellation.
-5. Everything sensitive writes an audit event.
+Architecture, flows, state ownership and scaling paths: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Phase status
 
-| Phase | Scope | Status |
-|---|---|---|
-| 1 Inspect & plan | repo/env inspection, this plan | ✅ |
-| 2 Foundation | FastAPI, SQLAlchemy models, auth (scrypt + HMAC tokens), config, Next.js app | ✅ (SQLite verified; **Postgres, Alembic, Redis not yet exercised**) |
-| 3 Command center | orb, command input, timeline, live task panel, recent tasks, tools/audit/tasks pages | 🟡 (4 of 12 pages; voice, theme toggle, mobile polish pending) |
-| 4 Task engine | states, approval, cancel, retry (bounded), idempotency, recovery, SSE, audit | ✅ (70 backend tests) |
-| 5 GenAI | provider interface + OpenAI-compatible adapter + LLM planner w/ fallback | 🟡 adapter is **untested against a live provider**; no streaming, no native tool-calling yet |
-| 6 Agentic workflows (LangGraph) | specialised agents | ⬜ (only planner + deterministic verifier/synthesizer exist) |
-| 7 Memory & RAG | pgvector, ingestion, citations | ⬜ |
-| 8 Voice | STT/TTS, push-to-talk | ⬜ |
-| 9 Vision & code tools | screenshot upload, workspace inspection | 🟡 workspace read/search/run tools done; screenshot analysis ⬜ |
-| 10 ML / PyTorch | router dataset, sklearn, torch | 🟡 rule-based baseline router only; no trained model, no results to report |
-| 11 Eval & hardening | eval harness, metrics, OTel | ⬜ (rate limiting + structured logs only) |
-| 12 Final verification | Docker verified, CI green | ⬜ (Docker files/CI written, **not yet run**) |
+| # | Phase | Status | Evidence / notes |
+|---|---|---|---|
+| 1 | Inspect & plan | ✅ | this plan; environment inspected (Python 3.11, Node 24, Docker 29) |
+| 2 | Foundation | ✅ | FastAPI, SQLAlchemy 2, Alembic (drift test), auth, Next.js, Docker Compose on Postgres verified |
+| 3 | Command center | ✅ | 11 pages, orb, timeline, live task panel, status/privacy panel, theme toggle, mobile layout checked by e2e (no horizontal overflow) |
+| 4 | Task engine | ✅ | states, approval, cancel, bounded retry, idempotency, restart recovery, SSE, audit; concurrency & duplicate-execution tests |
+| 5 | GenAI integration | 🟡 | provider interface + OpenAI-compatible chat/vision/STT/TTS adapter, LLM planning with validated fallback, usage tracking — **scripted-fake tested only; no streaming, no native tool-calling** |
+| 6 | Agentic workflows | 🟡 | LangGraph used for the bounded RAG answer workflow (gate/draft/verify/retry/fallback). Planner, verifier and synthesizer are deterministic engine components; other "agents" are tools, not separate graphs |
+| 7 | Memory & RAG | ✅ (🟡 retrieval quality) | memory CRUD/export/disable/secret refusal; PDF/text ingestion; hybrid retrieval; citations; isolation. Embeddings are hashed n-grams, not neural/pgvector |
+| 8 | Voice | 🟡 | push-to-talk, permission states, STT/TTS provider interfaces, browser TTS fallback — **live STT/TTS untested**; no wake word |
+| 9 | Vision & code tools | 🟡 | screenshot upload analysis (provider-gated, validated, not stored); workspace browser + sandboxed command runner. No screen capture, no browser automation |
+| 10 | ML & deep learning | ✅ | dataset + leakage tests, rules vs sklearn vs PyTorch, reproducible, results documented honestly (torch < sklearn) |
+| 11 | Evaluation & hardening | ✅ (🟡 scope) | deterministic eval suite stored per run; rate limits; metrics; structured logs. No OpenTelemetry/Redis; live-LLM evals not run |
+| 12 | Final verification | 🟡 | backend, frontend, e2e, Docker verified locally; **GitHub Actions not yet run** |
 
-## Next steps (in order)
-1. Alembic migrations + run the suite against PostgreSQL; verify `docker compose up`.
-2. Live-provider integration test, then streaming + native tool-calling.
-3. Memory (explicit save/edit/delete/export) and document RAG with citations.
-4. Router dataset + sklearn model compared against the rule baseline; then PyTorch experiment.
-5. Evaluation harness, voice (push-to-talk), screenshot analysis, LangGraph agents.
+## Definition-of-done checklist
+- [x] Command center functional; [x] task progress/history persist; [x] results verified before success is reported
+- [x] user-controlled memory; [x] RAG with evidence-linked (extractive or verified-LLM) answers
+- [x] tool execution respects explicit permissions; [x] critical security tests pass
+- [x] ML and PyTorch experiments run with real, documented results
+- [x] Docker setup documented **and verified**; [x] no real credentials committed
+- [ ] configured LLM provider supports real conversations — **implemented, not verified live**
+- [ ] voice input/spoken output "work when configured" — **implemented, not verified live**
+- [ ] screenshot analysis "works when a vision provider is configured" — **implemented, not verified live**
+- [ ] CI passes — **workflow written, not yet run**
+
+## Not built (from the original brief)
+Redis/Celery, pgvector, MLflow, OpenTelemetry, browser automation, desktop/screen capture, wake word, data charts, OCR,
+file-writing tools, UI-based provider configuration, provider-configuration/model-version/sessions tables (versions live in
+artifact metadata and eval configs; tokens are stateless), dependency audit in CI, container-sandboxed command runner.
+
+## Suggested next steps
+1. Run against a real provider (chat, document Q&A, vision, STT/TTS) and fix integration issues; add streaming.
+2. Push and watch the CI workflow; fix any environment differences.
+3. Containerised command runner; HttpOnly-cookie sessions; Redis-backed limiter/claims.
+4. Neural embeddings + pgvector; a larger, non-synthetic router dataset; use the SSE endpoint in the UI.
