@@ -89,6 +89,22 @@ def rule_plan(request: str) -> Plan:
         steps.append(PlanStep(tool="list_directory", args={"path": "."}, description="List the workspace root"))
     if re.search(r"\b(task history|recent tasks|previous tasks|what have (you|we) done)\b", low):
         steps.append(PlanStep(tool="task_history", args={"limit": 5}, description="Fetch recent tasks"))
+    m = re.search(r"^\s*(?:please\s+)?(?:remember|save to memory|note)(?: that|:)?\s+(.{3,1000})$", text, re.I | re.S)
+    if m and not re.search(r"\b(what|do you|did i)\b", low[:25]):
+        content = m.group(1).strip()
+        kind = "preference" if re.search(r"\b(prefer|like|always|never|favou?rite)\b", content, re.I) else "fact"
+        steps.append(PlanStep(tool="save_memory", args={"content": content, "kind": kind},
+                              description="Save this to memory (needs your approval)"))
+    m = re.search(r"(?:what do you (?:remember|know) about|recall|what did i (?:say|tell you) about)\s+(.{2,300}?)\??$", text, re.I)
+    if m:
+        steps.append(PlanStep(tool="search_memory", args={"query": m.group(1)}, description="Search saved memories"))
+    m = re.search(r"(?:search|look (?:in|through)|check|find)\s+(?:in\s+)?my\s+(?:documents?|docs|notes|knowledge base|files)\s*(?:for|about)?\s*(.{2,300}?)\??$", text, re.I)         or re.search(r"(?:according to|based on|what do)\s+my\s+(?:documents?|docs|notes|knowledge base)\s*(?:say\s+)?(?:about\s+)?(.{2,300}?)\??$", text, re.I)
+    if m:
+        steps.append(PlanStep(tool="search_documents", args={"query": m.group(1).strip() or text},
+                              description="Search your uploaded documents"))
+    m = re.search(r"(?:analy[sz]e|summari[sz]e|describe)\s+(?:the\s+)?(?:data\s+in\s+)?[`'\"]?([\w./\-]+\.csv)[`'\"]?", text, re.I)
+    if m:
+        steps.append(PlanStep(tool="analyze_csv", args={"path": m.group(1).replace("\\", "/")}, description=f"Analyse {m.group(1)}"))
     criteria = [f"Step {i}: {s.tool} completes and returns schema-valid output" for i, s in enumerate(steps, 1)]
     return Plan(steps=steps, success_criteria=criteria)
 

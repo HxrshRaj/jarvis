@@ -18,7 +18,7 @@ from sqlalchemy import select
 
 from app.config import get_settings
 from app.db import session_factory
-from app.llm.providers import LLMError, get_provider
+from app.llm.providers import LLMError, get_provider, usage_context
 from app.ml.router import route_request
 from app.models import (
     TERMINAL, AuditEvent, Message, StepStatus, Task, TaskStatus, TaskStep,
@@ -118,6 +118,7 @@ class TaskEngine:
                 return
             task.status = TaskStatus.RUNNING.value
             db.commit()
+            usage_context.set({"user_id": task.user_id, "purpose": "task"})
 
             if not task.steps and not (task.verification or {}).get("planned"):
                 if not self._plan(db, task, registry):
@@ -265,11 +266,29 @@ class TaskEngine:
         task.verification = {**(task.verification or {}), "checks": checks, "all_passed": passed == len(checks),
                              "tools_used": [s.tool for s in task.steps if s.status == StepStatus.SUCCEEDED.value]}
         task.summary = summarise(task)
+        rag = self._rag_answer(task)
+        if rag:
+            task.verification = {**task.verification, "rag": {k: rag[k] for k in ("mode", "citations", "notes")}}
+            task.summary = f"{rag['answer']}\n\n---\n{task.summary}"
         if task.status != TaskStatus.SUCCEEDED.value:
             task.error = "; ".join(f"step {c['step']} ({c['tool']}): {c['reason']}" for c in checks if not c["passed"])
         audit(db, task.user_id, "task.finished", task.id, task.status)
         self._assistant_message(db, task, task.summary)
         db.commit()
+
+    @staticmethod
+    def _rag_answer(task: Task) -> dict | None:
+        """Run the bounded LangGraph answer workflow when a document search produced the evidence."""
+        step = next((s for s in task.steps if s.tool == "search_documents" and s.status == StepStatus.SUCCEEDED.value), None)
+        if step is None or not step.output:
+            return None
+        from app.agents.rag_graph import answer_with_citations
+
+        try:
+            return answer_with_citations(task.request, step.output["hits"], get_provider())
+        except Exception:  # never let answer synthesis break a task whose tools succeeded
+            log.exception("rag answer failed")
+            return None
 
     @staticmethod
     def _assistant_message(db, task: Task, text: str) -> None:
@@ -291,6 +310,18 @@ def _describe(step: TaskStep) -> str:
                 f"min={o['minimum']:.6g}, max={o['maximum']:.6g}")
     if step.tool == "task_history":
         return f"{len(o.get('tasks', []))} recent task(s)"
+    if step.tool == "search_documents":
+        return f"{len(o.get('hits', []))} passage(s) found for '{o.get('query')}'"
+    if step.tool == "search_memory":
+        ms = o.get("memories", [])
+        if not o.get("memory_enabled", True):
+            return "persistent memory is disabled"
+        return f"{len(ms)} memor{'y' if len(ms) == 1 else 'ies'}" + "".join(f"\n  - ({m['kind']}) {m['content']}" for m in ms)
+    if step.tool == "save_memory":
+        return f"saved {o.get('kind')} memory: {o.get('content')}"
+    if step.tool == "analyze_csv":
+        cols = "; ".join(f"{c['column']}: mean={c['mean']:.6g}, min={c['minimum']:.6g}, max={c['maximum']:.6g}" for c in o.get("numeric", [])[:8])
+        return f"{o.get('rows')} rows, {len(o.get('columns', []))} columns. {cols}"
     if step.tool == "run_command":
         tail = "\n".join((o.get("output") or "").strip().splitlines()[-5:])
         return f"`{' '.join(o['command'])}` exited with code {o['exit_code']} in {o['duration_seconds']}s\n{tail}"

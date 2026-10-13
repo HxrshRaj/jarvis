@@ -4,12 +4,14 @@ import time
 from collections import defaultdict, deque
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.api.routes import router
+from app.api.routes_extra import router as extra_router
+from app.services import metrics
 from app.config import get_settings
 from app.db import session_factory
 from app.llm.providers import get_provider
@@ -39,6 +41,7 @@ class RateLimiter:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    metrics.install_usage_sink()
     session_factory()  # lazy: creates the engine+tables once unless already initialised
     engine.recover_interrupted()
     yield
@@ -51,7 +54,7 @@ def create_app() -> FastAPI:
     app.state.limiter = RateLimiter()
     app.add_middleware(
         CORSMiddleware, allow_origins=s.cors_origins, allow_credentials=False,
-        allow_methods=["GET", "POST", "DELETE"], allow_headers=["Authorization", "Content-Type"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"], allow_headers=["Authorization", "Content-Type"],
     )
 
     @app.middleware("http")
@@ -59,7 +62,11 @@ def create_app() -> FastAPI:
         key = request.client.host if request.client else "unknown"
         if request.url.path.startswith("/api/") and not app.state.limiter.allow(key, get_settings().rate_limit_per_minute):
             return JSONResponse({"detail": "Rate limit exceeded"}, status_code=429, headers={"Retry-After": "60"})
+        started = time.perf_counter()
         response = await call_next(request)
+        route = request.scope.get("route")
+        metrics.observe_request(request.method, getattr(route, "path", "unmatched"), response.status_code,
+                                time.perf_counter() - started)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "no-referrer"
         return response
@@ -73,6 +80,10 @@ def create_app() -> FastAPI:
     def health():
         return {"status": "ok"}
 
+    @app.get("/metrics", include_in_schema=False)
+    def prometheus():
+        return Response(metrics.render(), media_type="text/plain; version=0.0.4")
+
     @app.get("/health/ready")
     def ready():
         try:
@@ -84,11 +95,12 @@ def create_app() -> FastAPI:
         p = get_provider()
         return JSONResponse(
             {"database": db_ok, "llm_provider": p.name, "llm_is_real": p.is_real,
-             "workspace": str(s.workspace_root)},
+             "vision": bool(p.supports_vision), "speech": bool(p.supports_speech), "workspace": str(s.workspace_root)},
             status_code=200 if db_ok else 503,
         )
 
     app.include_router(router)
+    app.include_router(extra_router)
     return app
 
 

@@ -26,6 +26,15 @@ class Settings(BaseSettings):
     llm_api_key: str = ""  # read from env only; never stored in DB or returned by the API
     llm_model: str = "gpt-4o-mini"
     llm_timeout_seconds: float = 30.0
+    # Optional capabilities; empty = not configured (the UI reports them as unavailable).
+    llm_vision_model: str = ""
+    llm_stt_model: str = ""  # e.g. whisper-1
+    llm_tts_model: str = ""  # e.g. tts-1
+    llm_tts_voice: str = "alloy"
+    # Cost *estimates* only (USD per 1M tokens); 0 means "pricing not configured".
+    price_prompt_per_mtok: float = 0.0
+    price_completion_per_mtok: float = 0.0
+    router: str = "rules"  # "rules" | "model" (use trained classifier when confident)
     rate_limit_per_minute: int = 120
 
 

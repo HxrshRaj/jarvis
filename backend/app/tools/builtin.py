@@ -205,6 +205,145 @@ def _command_needs_approval(args: RunCommandIn) -> bool:
         return True  # invalid commands are rejected at plan time anyway
 
 
+# ---- search_documents / search_memory / save_memory --------------------------------------------------
+
+
+class DocSearchIn(BaseModel):
+    query: str = Field(min_length=2, max_length=500)
+    k: int = Field(default=5, ge=1, le=10)
+
+
+class DocHit(BaseModel):
+    chunk_id: str
+    document_id: str
+    filename: str
+    chunk_index: int
+    page: int | None
+    score: float
+    lexical: float
+    semantic: float
+    text: str
+
+
+class DocSearchOut(BaseModel):
+    query: str
+    hits: list[DocHit]
+
+
+def search_documents_tool(args: DocSearchIn, ctx: ToolContext) -> dict:
+    from app.services import knowledge
+
+    with ctx.db() as db:
+        return {"query": args.query, "hits": knowledge.search_documents(db, ctx.user_id, args.query, args.k)}
+
+
+class MemSearchIn(BaseModel):
+    query: str = Field(min_length=2, max_length=500)
+    k: int = Field(default=5, ge=1, le=10)
+
+
+class MemItem(BaseModel):
+    id: str
+    kind: str
+    content: str
+    score: float
+
+
+class MemSearchOut(BaseModel):
+    memories: list[MemItem]
+    memory_enabled: bool
+
+
+def search_memory_tool(args: MemSearchIn, ctx: ToolContext) -> dict:
+    from app.services import knowledge
+
+    with ctx.db() as db:
+        found = knowledge.search_memories(db, ctx.user_id, args.query, args.k)
+        return {"memories": [{"id": m.id, "kind": m.kind, "content": m.content, "score": round(sc, 5)} for m, sc in found],
+                "memory_enabled": knowledge.memory_enabled(db, ctx.user_id)}
+
+
+class SaveMemIn(BaseModel):
+    content: str = Field(min_length=1, max_length=2000)
+    kind: str = "fact"
+
+
+class SaveMemOut(BaseModel):
+    id: str
+    kind: str
+    content: str
+
+
+def save_memory_tool(args: SaveMemIn, ctx: ToolContext) -> dict:
+    from app.services import knowledge
+
+    with ctx.db() as db:
+        try:
+            m = knowledge.save_memory(db, ctx.user_id, args.content, args.kind)
+        except knowledge.KnowledgeError as e:
+            raise ToolError(str(e)) from None
+        db.commit()
+        return {"id": m.id, "kind": m.kind, "content": m.content}
+
+
+def _save_memory_precheck(args: SaveMemIn) -> None:
+    from app.services import knowledge
+
+    if knowledge.contains_secret(args.content):
+        raise ToolError("refusing to store what looks like a secret or sensitive identifier")
+
+
+# ---- analyze_csv ----------------------------------------------------------------------------------------
+
+
+class CsvIn(BaseModel):
+    path: str
+
+
+class ColumnStats(BaseModel):
+    column: str
+    count: int
+    mean: float
+    stdev: float | None
+    minimum: float
+    maximum: float
+    missing: int
+
+
+class CsvOut(BaseModel):
+    path: str
+    rows: int
+    columns: list[str]
+    numeric: list[ColumnStats]
+    non_numeric: list[str]
+
+
+def analyze_csv(args: CsvIn, ctx: ToolContext) -> dict:
+    import pandas as pd
+
+    target = resolve_in_workspace(ctx.workspace, args.path)
+    if not target.is_file() or target.suffix.lower() != ".csv":
+        raise ToolError("expected an existing .csv file")
+    if target.stat().st_size > ctx.max_file_bytes * 8:
+        raise ToolError("CSV is too large for in-process analysis")
+    try:
+        df = pd.read_csv(target, nrows=100_000)
+    except Exception as e:
+        raise ToolError(f"could not parse CSV ({type(e).__name__})") from None
+    numeric, other = [], []
+    for col in df.columns:
+        series = pd.to_numeric(df[col], errors="coerce")
+        if series.notna().sum() >= max(1, int(0.8 * df[col].notna().sum())) and df[col].notna().any():
+            s = series.dropna()
+            numeric.append({"column": str(col), "count": int(s.count()), "mean": float(s.mean()),
+                            "stdev": float(s.std()) if len(s) > 1 else None, "minimum": float(s.min()),
+                            "maximum": float(s.max()), "missing": int(df[col].isna().sum())})
+        else:
+            other.append(str(col))
+    return {"path": args.path, "rows": int(len(df)), "columns": [str(c) for c in df.columns],
+            "numeric": numeric, "non_numeric": other}
+
+
 def register_builtin(reg: ToolRegistry) -> None:
     reg.register(ToolSpec("list_directory", "List files in a directory of the approved workspace.",
                           ListDirIn, ListDirOut, list_directory, permissions=["workspace.read"]))
@@ -222,3 +361,12 @@ def register_builtin(reg: ToolRegistry) -> None:
                           RunCommandIn, RunCommandOut, run_command, permissions=["workspace.execute"],
                           risk="low", timeout=120, needs_approval=_command_needs_approval,
                           precheck=lambda a: validate_command(a.argv)))
+    reg.register(ToolSpec("search_documents", "Hybrid (BM25 + embedding) search over the user's uploaded documents.",
+                          DocSearchIn, DocSearchOut, search_documents_tool, permissions=["documents.read"]))
+    reg.register(ToolSpec("search_memory", "Search the user's saved memories (empty if memory is disabled).",
+                          MemSearchIn, MemSearchOut, search_memory_tool, permissions=["memory.read"]))
+    reg.register(ToolSpec("save_memory", "Save a user-approved memory (preference, project note or fact). Secrets are refused.",
+                          SaveMemIn, SaveMemOut, save_memory_tool, permissions=["memory.write"], risk="medium",
+                          precheck=_save_memory_precheck))
+    reg.register(ToolSpec("analyze_csv", "Compute per-column statistics for a CSV file in the workspace (pandas).",
+                          CsvIn, CsvOut, analyze_csv, permissions=["workspace.read"], timeout=60))
