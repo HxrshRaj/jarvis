@@ -25,6 +25,8 @@ def resolve_in_workspace(workspace: Path, user_path: str) -> Path:
     """Resolve a user/LLM supplied path and refuse anything outside the workspace or sensitive."""
     if "\x00" in user_path:
         raise ToolError("invalid path")
+    if re.match(r"^[A-Za-z]:", user_path) or user_path.startswith("\\\\"):  # drive/UNC paths: refuse on every OS
+        raise ToolError("path is outside the approved workspace")
     root = workspace.resolve()
     candidate = (root / user_path).resolve()  # absolute inputs replace root, then fail the check below
     try:

@@ -51,7 +51,7 @@ Create an account in the UI and try "run the tests" against the sample project i
 ## Tests and results (this checkout)
 | Suite | Command | Result |
 |---|---|---|
-| Backend (mocked providers) | `cd backend && python -m pytest -q` | 138 passed, 1 skipped (Windows symlink test) |
+| Backend (mocked providers) | `cd backend && python -m pytest -q` | 139 passed on Linux; 138 passed + 1 skipped (symlink test) on Windows |
 | Frontend unit/component | `cd frontend && npm run lint && npm test` | 21 passed, `tsc` clean |
 | Frontend build | `npm run build` | passes |
 | End-to-end (Playwright, real Docker stack on Postgres) | `E2E_CHANNEL=chrome npx playwright test` | 7 passed |
