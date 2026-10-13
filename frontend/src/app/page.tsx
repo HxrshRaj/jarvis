@@ -1,11 +1,13 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api, TERMINAL } from "@/lib/api";
+import { useSpeech } from "@/lib/voice";
+import { LookAtThis } from "@/components/LookAtThis";
 import { Orb, type OrbState } from "@/components/Orb";
 import { StatusBadge, TaskPanel, useTask } from "@/components/TaskPanel";
-import { PLANNED } from "@/components/Shell";
+import { VoiceControls } from "@/components/VoiceControls";
 
 const QUICK = ["list the files in the project", "run the tests", "what is the mean of 4, 8, 15, 16, 23, 42", "show my recent tasks"];
 
@@ -17,23 +19,36 @@ export default function CommandCenter() {
   const task = useTask(taskId).data;
   const active = !!task && !TERMINAL.includes(task.status);
 
+  const caps = useQuery({ queryKey: ["caps"], queryFn: api.capabilities });
+  const speech = useSpeech(!!caps.data?.text_to_speech);
+
   const send = useMutation({
     mutationFn: (m: string) => api.chat(m, conv ?? undefined),
     onSuccess: (r) => { setConv(r.conversation_id); setTaskId(r.task_id); setText(""); qc.invalidateQueries({ queryKey: ["tasks"] }); },
   });
-  const messages = useQuery({
-    queryKey: ["conversation", conv, task?.status], enabled: !!conv, queryFn: () => api.conversation(conv!),
-  });
+  const messages = useQuery({ queryKey: ["conversation", conv, task?.status], enabled: !!conv, queryFn: () => api.conversation(conv!) });
   const recent = useQuery({ queryKey: ["tasks", "recent"], queryFn: () => api.tasks(6), refetchInterval: 4000 });
   const ready = useQuery({ queryKey: ["ready"], queryFn: api.ready, refetchInterval: 15000 });
   const tools = useQuery({ queryKey: ["tools"], queryFn: api.tools });
+
+  // Speak new assistant replies when the user opted in (never speaks history on load).
+  const lastSpoken = useRef<string | null>(null);
+  useEffect(() => {
+    const last = [...(messages.data?.messages ?? [])].reverse().find((m) => m.role === "assistant");
+    if (!last) return;
+    if (lastSpoken.current === null) { lastSpoken.current = last.id; return; }
+    if (last.id !== lastSpoken.current) {
+      lastSpoken.current = last.id;
+      if (speech.prefs.auto) void speech.speak(last.content.split("\n---\n")[0]);
+    }
+  }, [messages.data, speech]);
 
   const orb: OrbState = task?.status === "awaiting_approval" ? "waiting" : active || send.isPending ? "working" : task?.status === "failed" ? "error" : "idle";
 
   return (
     <main className="grid gap-4 lg:grid-cols-[2fr_1fr]">
       <div className="space-y-4">
-        <section className="panel flex flex-col items-center gap-4 p-6">
+        <section className="panel flex flex-col items-center gap-4 p-4 md:p-6">
           <Orb state={orb} />
           <form className="flex w-full gap-2" onSubmit={(e) => { e.preventDefault(); if (text.trim()) send.mutate(text.trim()); }}>
             <label className="sr-only" htmlFor="cmd">Command</label>
@@ -41,10 +56,11 @@ export default function CommandCenter() {
             <button className="btn btn-primary" disabled={send.isPending || !text.trim()}>Send</button>
           </form>
           {send.error && <p role="alert" className="text-sm" style={{ color: "var(--danger)" }}>{send.error.message}</p>}
+          <VoiceControls canTranscribe={!!caps.data?.speech_to_text} onTranscript={(t) => send.mutate(t)}
+            speech={speech.prefs} setSpeech={speech.update} speaking={speech.speaking} stopSpeaking={speech.stop} />
           <div className="flex flex-wrap justify-center gap-2" aria-label="Quick actions">
             {QUICK.map((q) => <button key={q} className="btn" disabled={send.isPending} onClick={() => send.mutate(q)}>{q}</button>)}
           </div>
-          <p className="muted text-xs">Voice input: not implemented yet (planned, push-to-talk first).</p>
         </section>
 
         <section className="panel p-4" aria-label="Conversation">
@@ -71,12 +87,14 @@ export default function CommandCenter() {
           <div className="mb-2 flex justify-between"><h2 className="text-sm font-semibold">Recent tasks</h2><Link className="muted text-xs underline" href="/tasks">All</Link></div>
           <ul className="space-y-1.5">
             {recent.data?.items.map((t) => (
-              <li key={t.id}><button className="flex w-full items-center justify-between gap-2 text-left text-sm" onClick={() => { setTaskId(t.id); }}>
+              <li key={t.id}><button className="flex w-full items-center justify-between gap-2 text-left text-sm" onClick={() => setTaskId(t.id)}>
                 <span className="truncate">{t.request}</span><StatusBadge status={t.status} /></button></li>
             ))}
             {recent.data?.items.length === 0 && <li className="muted text-sm">No tasks yet.</li>}
           </ul>
         </section>
+
+        <LookAtThis available={!!caps.data?.vision} />
 
         <section className="panel space-y-1 p-4 text-sm" aria-label="System status">
           <h2 className="mb-1 text-sm font-semibold">System &amp; privacy</h2>
@@ -86,12 +104,11 @@ export default function CommandCenter() {
             <p>Language model: {ready.data.llm_is_real ? ready.data.llm_provider : <span style={{ color: "var(--amber)" }}>none configured (offline mode)</span>}</p>
             <p className="muted break-all text-xs">Tool workspace: {ready.data.workspace}</p>
           </>}
-          <p className="muted text-xs">Tools: {tools.data?.filter((t) => t.available).length ?? "…"} available · microphone, screen and browser access: off (not implemented)</p>
-        </section>
-
-        <section className="panel p-4 text-xs" aria-label="Roadmap">
-          <h2 className="mb-1 text-sm font-semibold">Not built yet</h2>
-          <p className="muted">{PLANNED.join(" · ")}</p>
+          <ul className="muted text-xs" aria-label="Capabilities">
+            <li>Tools available: {tools.data?.filter((t) => t.available).length ?? "…"}</li>
+            <li>Microphone: only while you hold the talk button · Speech-to-text: {caps.data?.speech_to_text ? "on" : "off"} · Text-to-speech: {caps.data?.text_to_speech ? "backend" : "browser-local"}</li>
+            <li>Vision: {caps.data?.vision ? "on (explicit upload only)" : "off"} · Screen capture / browser automation: not implemented</li>
+          </ul>
         </section>
       </aside>
     </main>
