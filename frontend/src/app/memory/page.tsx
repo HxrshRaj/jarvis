@@ -15,16 +15,11 @@ export default function MemoryPage() {
   const add = useMutation({ mutationFn: () => api.addMemory(content, kind), onSuccess: () => { setContent(""); refresh(); } });
   const edit = useMutation({ mutationFn: (id: string) => api.editMemory(id, draft), onSuccess: () => { setEditing(null); refresh(); } });
   const del = useMutation({ mutationFn: (id: string) => api.deleteMemory(id), onSuccess: refresh });
+  // `pending` flips synchronously in the click handler (instant feedback); the server value takes over once settled.
+  const [pending, setPending] = useState<boolean | null>(null);
   const toggle = useMutation({
     mutationFn: (v: boolean) => api.setMemorySetting(v),
-    onMutate: async (v) => { // optimistic; cancel in-flight fetches first so a stale response cannot overwrite it
-      await qc.cancelQueries({ queryKey: ["memsetting"] });
-      const prev = qc.getQueryData(["memsetting"]);
-      qc.setQueryData(["memsetting"], { enabled: v });
-      return { prev };
-    },
-    onError: (_e, _v, ctx) => qc.setQueryData(["memsetting"], ctx?.prev),
-    onSettled: () => qc.invalidateQueries({ queryKey: ["memsetting"] }),
+    onSettled: async () => { await qc.invalidateQueries({ queryKey: ["memsetting"] }); setPending(null); },
   });
   const exp = useMutation({
     mutationFn: api.exportMemories,
@@ -34,14 +29,14 @@ export default function MemoryPage() {
       a.click(); URL.revokeObjectURL(url);
     },
   });
-  const enabled = setting.data?.enabled ?? true;
+  const enabled = pending ?? setting.data?.enabled ?? true;
 
   return (
     <main className="space-y-4">
       <section className="panel space-y-3 p-4">
         <h1 className="text-lg font-semibold">Memory &amp; preferences</h1>
         <p className="muted text-xs">Only things you choose to save live here. Passwords, API keys, tokens and similar identifiers are refused automatically. Chat history is stored separately and does not become memory.</p>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={enabled} onChange={(e) => toggle.mutate(e.target.checked)} /> Persistent memory enabled</label>
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={enabled} onChange={(e) => { setPending(e.target.checked); toggle.mutate(e.target.checked); }} /> Persistent memory enabled</label>
         {!enabled && <p className="text-xs" style={{ color: "var(--amber)" }}>Memory is off: JARVIS will not save or recall memories. Existing ones stay visible and deletable below.</p>}
         <form className="flex flex-wrap gap-2" onSubmit={(e) => { e.preventDefault(); if (content.trim()) add.mutate(); }}>
           <label className="sr-only" htmlFor="mem">New memory</label>
