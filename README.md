@@ -58,8 +58,8 @@ Create an account in the UI and try "run the tests" against the sample project i
 | Deterministic evals | `python -m app.services.evals` | see Evaluation page; 1 known failure kept visible |
 | ML experiment | `python -m ml.train` | see [docs/ML.md](docs/ML.md) |
 
-The GitHub Actions workflow (`.github/workflows/ci.yml`) mirrors these commands but **has not been run yet** (no push has
-triggered it at the time of writing). Mocked-provider tests are not integration tests of any real provider.
+GitHub Actions (`.github/workflows/ci.yml`) runs backend tests, frontend lint/tests/build, and the Playwright suite against the real
+Docker stack on every push; all three jobs passed on commit `df61391`. Mocked-provider tests are not integration tests of any real provider.
 
 ## Documentation
 [Architecture](docs/ARCHITECTURE.md) · [Security & privacy](docs/SECURITY.md) · [Tools & permissions](docs/TOOLS.md) ·

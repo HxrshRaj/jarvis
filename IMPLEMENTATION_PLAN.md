@@ -20,7 +20,7 @@ Architecture, flows, state ownership and scaling paths: [docs/ARCHITECTURE.md](d
 | 9 | Vision & code tools | 🟡 | screenshot upload analysis (provider-gated, validated, not stored); workspace browser + sandboxed command runner. No screen capture, no browser automation |
 | 10 | ML & deep learning | ✅ | dataset + leakage tests, rules vs sklearn vs PyTorch, reproducible, results documented honestly (torch < sklearn) |
 | 11 | Evaluation & hardening | ✅ (🟡 scope) | deterministic eval suite stored per run; rate limits; metrics; structured logs. No OpenTelemetry/Redis; live-LLM evals not run |
-| 12 | Final verification | 🟡 | backend, frontend, e2e, Docker verified locally; **GitHub Actions not yet run** |
+| 12 | Final verification | ✅ | backend (Windows + Linux container), frontend, Playwright e2e on the Docker stack verified locally; GitHub Actions backend/frontend/e2e all green on `df61391` |
 
 ## Definition-of-done checklist
 - [x] Command center functional; [x] task progress/history persist; [x] results verified before success is reported
@@ -31,7 +31,7 @@ Architecture, flows, state ownership and scaling paths: [docs/ARCHITECTURE.md](d
 - [ ] configured LLM provider supports real conversations — **implemented, not verified live**
 - [ ] voice input/spoken output "work when configured" — **implemented, not verified live**
 - [ ] screenshot analysis "works when a vision provider is configured" — **implemented, not verified live**
-- [ ] CI passes — **workflow written, not yet run**
+- [x] CI passes (GitHub Actions, commit `df61391`)
 
 ## Not built (from the original brief)
 Redis/Celery, pgvector, MLflow, OpenTelemetry, browser automation, desktop/screen capture, wake word, data charts, OCR,
@@ -40,6 +40,6 @@ artifact metadata and eval configs; tokens are stateless), dependency audit in C
 
 ## Suggested next steps
 1. Run against a real provider (chat, document Q&A, vision, STT/TTS) and fix integration issues; add streaming.
-2. Push and watch the CI workflow; fix any environment differences.
+2. Add dependency auditing (`pip-audit`, `npm audit`) to CI.
 3. Containerised command runner; HttpOnly-cookie sessions; Redis-backed limiter/claims.
 4. Neural embeddings + pgvector; a larger, non-synthetic router dataset; use the SSE endpoint in the UI.
