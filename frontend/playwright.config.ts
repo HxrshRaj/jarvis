@@ -7,7 +7,7 @@ export default defineConfig({
   timeout: 60_000,
   retries: 0,
   workers: 1,
-  reporter: [["list"]],
+  reporter: process.env.CI ? [["list"], ["github"]] : [["list"]],  // "github" turns failures into PR/check annotations
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:3000",
     channel: process.env.E2E_CHANNEL || undefined,
