@@ -1,0 +1,1682 @@
+{
+ "dataset": {
+  "train": 304,
+  "val": 51,
+  "test": 50,
+  "natural_test": 64,
+  "classes": [
+   "general_question",
+   "research",
+   "coding_assistance",
+   "document_analysis",
+   "data_analysis",
+   "memory_retrieval",
+   "voice_command",
+   "tool_execution"
+  ],
+  "synthetic": true,
+  "note": "template-generated; split by template AND filler pool; natural_test is hand-written"
+ },
+ "rules": {
+  "test": {
+   "n": 50,
+   "accuracy": 0.46,
+   "macro_f1": 0.4692,
+   "per_class": {
+    "general_question": {
+     "precision": 0.188,
+     "recall": 1.0,
+     "f1": 0.316,
+     "support": 6
+    },
+    "research": {
+     "precision": 1.0,
+     "recall": 0.5,
+     "f1": 0.667,
+     "support": 6
+    },
+    "coding_assistance": {
+     "precision": 0.8,
+     "recall": 0.5,
+     "f1": 0.615,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "data_analysis": {
+     "precision": 1.0,
+     "recall": 0.429,
+     "f1": 0.6,
+     "support": 7
+    },
+    "memory_retrieval": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "voice_command": {
+     "precision": 1.0,
+     "recall": 0.5,
+     "f1": 0.667,
+     "support": 6
+    },
+    "tool_execution": {
+     "precision": 1.0,
+     "recall": 0.8,
+     "f1": 0.889,
+     "support": 5
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "document_analysis",
+     "pred": "general_question",
+     "count": 6
+    },
+    {
+     "true": "memory_retrieval",
+     "pred": "general_question",
+     "count": 6
+    },
+    {
+     "true": "coding_assistance",
+     "pred": "general_question",
+     "count": 4
+    },
+    {
+     "true": "data_analysis",
+     "pred": "general_question",
+     "count": 4
+    },
+    {
+     "true": "research",
+     "pred": "general_question",
+     "count": 3
+    },
+    {
+     "true": "voice_command",
+     "pred": "general_question",
+     "count": 3
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      4,
+      0,
+      4,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      4,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+     ],
+     [
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+     ],
+     [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      4
+     ]
+    ]
+   }
+  },
+  "natural_test": {
+   "n": 64,
+   "accuracy": 0.2969,
+   "macro_f1": 0.3041,
+   "per_class": {
+    "general_question": {
+     "precision": 0.157,
+     "recall": 1.0,
+     "f1": 0.271,
+     "support": 8
+    },
+    "research": {
+     "precision": 1.0,
+     "recall": 0.375,
+     "f1": 0.545,
+     "support": 8
+    },
+    "coding_assistance": {
+     "precision": 0.333,
+     "recall": 0.125,
+     "f1": 0.182,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 1.0,
+     "recall": 0.125,
+     "f1": 0.222,
+     "support": 8
+    },
+    "data_analysis": {
+     "precision": 1.0,
+     "recall": 0.375,
+     "f1": 0.545,
+     "support": 8
+    },
+    "memory_retrieval": {
+     "precision": 1.0,
+     "recall": 0.125,
+     "f1": 0.222,
+     "support": 8
+    },
+    "voice_command": {
+     "precision": 1.0,
+     "recall": 0.125,
+     "f1": 0.222,
+     "support": 8
+    },
+    "tool_execution": {
+     "precision": 1.0,
+     "recall": 0.125,
+     "f1": 0.222,
+     "support": 8
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "coding_assistance",
+     "pred": "general_question",
+     "count": 7
+    },
+    {
+     "true": "document_analysis",
+     "pred": "general_question",
+     "count": 7
+    },
+    {
+     "true": "memory_retrieval",
+     "pred": "general_question",
+     "count": 7
+    },
+    {
+     "true": "voice_command",
+     "pred": "general_question",
+     "count": 7
+    },
+    {
+     "true": "research",
+     "pred": "general_question",
+     "count": 5
+    },
+    {
+     "true": "data_analysis",
+     "pred": "general_question",
+     "count": 5
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      8,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      5,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      7,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      7,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      5,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+     ],
+     [
+      7,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+     ],
+     [
+      7,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      5,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "grouped_cv_macro_f1": {
+   "mean": 0.4187,
+   "std": 0.1301,
+   "folds": 5
+  }
+ },
+ "sklearn": {
+  "selection": {
+   "selected_C": 0.5,
+   "val_macro_f1_by_C": {
+    "0.5": 0.5441,
+    "2": 0.5421,
+    "10": 0.5421,
+    "50": 0.5421
+   }
+  },
+  "test": {
+   "n": 50,
+   "accuracy": 0.5,
+   "macro_f1": 0.4118,
+   "per_class": {
+    "general_question": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 6
+    },
+    "research": {
+     "precision": 0.429,
+     "recall": 0.5,
+     "f1": 0.462,
+     "support": 6
+    },
+    "coding_assistance": {
+     "precision": 0.462,
+     "recall": 0.75,
+     "f1": 0.571,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 0.333,
+     "recall": 0.167,
+     "f1": 0.222,
+     "support": 6
+    },
+    "data_analysis": {
+     "precision": 0.0,
+     "recall": 0.0,
+     "f1": 0.0,
+     "support": 7
+    },
+    "memory_retrieval": {
+     "precision": 0.545,
+     "recall": 1.0,
+     "f1": 0.706,
+     "support": 6
+    },
+    "voice_command": {
+     "precision": 0.667,
+     "recall": 0.667,
+     "f1": 0.667,
+     "support": 6
+    },
+    "tool_execution": {
+     "precision": 0.5,
+     "recall": 1.0,
+     "f1": 0.667,
+     "support": 5
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "general_question",
+     "pred": "coding_assistance",
+     "count": 4
+    },
+    {
+     "true": "data_analysis",
+     "pred": "research",
+     "count": 4
+    },
+    {
+     "true": "research",
+     "pred": "tool_execution",
+     "count": 3
+    },
+    {
+     "true": "document_analysis",
+     "pred": "memory_retrieval",
+     "count": 3
+    },
+    {
+     "true": "general_question",
+     "pred": "voice_command",
+     "count": 2
+    },
+    {
+     "true": "coding_assistance",
+     "pred": "memory_retrieval",
+     "count": 2
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      0,
+      0,
+      4,
+      0,
+      0,
+      0,
+      2,
+      0
+     ],
+     [
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      6,
+      0,
+      0,
+      2,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      2,
+      1,
+      0,
+      3,
+      0,
+      0
+     ],
+     [
+      0,
+      4,
+      0,
+      1,
+      0,
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      4,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    ]
+   }
+  },
+  "natural_test": {
+   "n": 64,
+   "accuracy": 0.7344,
+   "macro_f1": 0.7097,
+   "per_class": {
+    "general_question": {
+     "precision": 0.333,
+     "recall": 0.125,
+     "f1": 0.182,
+     "support": 8
+    },
+    "research": {
+     "precision": 0.778,
+     "recall": 0.875,
+     "f1": 0.824,
+     "support": 8
+    },
+    "coding_assistance": {
+     "precision": 0.6,
+     "recall": 0.75,
+     "f1": 0.667,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 0.875,
+     "recall": 0.875,
+     "f1": 0.875,
+     "support": 8
+    },
+    "data_analysis": {
+     "precision": 0.833,
+     "recall": 0.625,
+     "f1": 0.714,
+     "support": 8
+    },
+    "memory_retrieval": {
+     "precision": 0.7,
+     "recall": 0.875,
+     "f1": 0.778,
+     "support": 8
+    },
+    "voice_command": {
+     "precision": 0.8,
+     "recall": 1.0,
+     "f1": 0.889,
+     "support": 8
+    },
+    "tool_execution": {
+     "precision": 0.75,
+     "recall": 0.75,
+     "f1": 0.75,
+     "support": 8
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "general_question",
+     "pred": "coding_assistance",
+     "count": 3
+    },
+    {
+     "true": "general_question",
+     "pred": "memory_retrieval",
+     "count": 2
+    },
+    {
+     "true": "general_question",
+     "pred": "research",
+     "count": 1
+    },
+    {
+     "true": "general_question",
+     "pred": "data_analysis",
+     "count": 1
+    },
+    {
+     "true": "research",
+     "pred": "voice_command",
+     "count": 1
+    },
+    {
+     "true": "coding_assistance",
+     "pred": "research",
+     "count": 1
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      1,
+      1,
+      3,
+      0,
+      1,
+      2,
+      0,
+      0
+     ],
+     [
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      6,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0,
+      0,
+      5,
+      1,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0,
+      1,
+      0,
+      7,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      0
+     ],
+     [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      6
+     ]
+    ]
+   }
+  },
+  "grouped_cv_macro_f1": {
+   "mean": 0.9057,
+   "std": 0.0729,
+   "folds": 5
+  },
+  "threshold_selection": {
+   "chosen": 0.2,
+   "out_of_fold": {
+    "0.15": {
+     "coverage": 1.0,
+     "accuracy": 0.921
+    },
+    "0.2": {
+     "coverage": 0.893,
+     "accuracy": 0.965
+    },
+    "0.25": {
+     "coverage": 0.654,
+     "accuracy": 0.974
+    },
+    "0.3": {
+     "coverage": 0.386,
+     "accuracy": 1.0
+    },
+    "0.35": {
+     "coverage": 0.208,
+     "accuracy": 1.0
+    },
+    "0.4": {
+     "coverage": 0.101,
+     "accuracy": 1.0
+    },
+    "0.45": {
+     "coverage": 0.031,
+     "accuracy": 1.0
+    },
+    "0.5": {
+     "coverage": 0.014,
+     "accuracy": 1.0
+    },
+    "0.55": {
+     "coverage": 0.0,
+     "accuracy": null
+    },
+    "0.6": {
+     "coverage": 0.0,
+     "accuracy": null
+    }
+   }
+  }
+ },
+ "hybrid": {
+  "threshold": 0.2,
+  "natural_test": {
+   "n": 64,
+   "accuracy": 0.75,
+   "macro_f1": 0.7704,
+   "per_class": {
+    "general_question": {
+     "precision": 0.353,
+     "recall": 0.75,
+     "f1": 0.48,
+     "support": 8
+    },
+    "research": {
+     "precision": 1.0,
+     "recall": 0.875,
+     "f1": 0.933,
+     "support": 8
+    },
+    "coding_assistance": {
+     "precision": 0.714,
+     "recall": 0.625,
+     "f1": 0.667,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 1.0,
+     "recall": 0.875,
+     "f1": 0.933,
+     "support": 8
+    },
+    "data_analysis": {
+     "precision": 1.0,
+     "recall": 0.5,
+     "f1": 0.667,
+     "support": 8
+    },
+    "memory_retrieval": {
+     "precision": 1.0,
+     "recall": 0.875,
+     "f1": 0.933,
+     "support": 8
+    },
+    "voice_command": {
+     "precision": 0.857,
+     "recall": 0.75,
+     "f1": 0.8,
+     "support": 8
+    },
+    "tool_execution": {
+     "precision": 0.75,
+     "recall": 0.75,
+     "f1": 0.75,
+     "support": 8
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "data_analysis",
+     "pred": "general_question",
+     "count": 3
+    },
+    {
+     "true": "general_question",
+     "pred": "coding_assistance",
+     "count": 2
+    },
+    {
+     "true": "coding_assistance",
+     "pred": "general_question",
+     "count": 2
+    },
+    {
+     "true": "voice_command",
+     "pred": "general_question",
+     "count": 2
+    },
+    {
+     "true": "tool_execution",
+     "pred": "general_question",
+     "count": 2
+    },
+    {
+     "true": "research",
+     "pred": "voice_command",
+     "count": 1
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      6,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      7,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      2,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      0,
+      7,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      3,
+      0,
+      0,
+      0,
+      4,
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      0,
+      0,
+      0,
+      7,
+      0,
+      0
+     ],
+     [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+     ],
+     [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      6
+     ]
+    ]
+   }
+  },
+  "model_used_fraction": 0.719,
+  "test": {
+   "n": 50,
+   "accuracy": 0.7,
+   "macro_f1": 0.7154,
+   "per_class": {
+    "general_question": {
+     "precision": 0.278,
+     "recall": 0.833,
+     "f1": 0.417,
+     "support": 6
+    },
+    "research": {
+     "precision": 1.0,
+     "recall": 0.833,
+     "f1": 0.909,
+     "support": 6
+    },
+    "coding_assistance": {
+     "precision": 1.0,
+     "recall": 0.625,
+     "f1": 0.769,
+     "support": 8
+    },
+    "document_analysis": {
+     "precision": 1.0,
+     "recall": 0.167,
+     "f1": 0.286,
+     "support": 6
+    },
+    "data_analysis": {
+     "precision": 1.0,
+     "recall": 0.429,
+     "f1": 0.6,
+     "support": 7
+    },
+    "memory_retrieval": {
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "support": 6
+    },
+    "voice_command": {
+     "precision": 0.833,
+     "recall": 0.833,
+     "f1": 0.833,
+     "support": 6
+    },
+    "tool_execution": {
+     "precision": 0.833,
+     "recall": 1.0,
+     "f1": 0.909,
+     "support": 5
+    }
+   },
+   "top_confusions": [
+    {
+     "true": "document_analysis",
+     "pred": "general_question",
+     "count": 5
+    },
+    {
+     "true": "data_analysis",
+     "pred": "general_question",
+     "count": 4
+    },
+    {
+     "true": "coding_assistance",
+     "pred": "general_question",
+     "count": 3
+    },
+    {
+     "true": "general_question",
+     "pred": "voice_command",
+     "count": 1
+    },
+    {
+     "true": "research",
+     "pred": "tool_execution",
+     "count": 1
+    },
+    {
+     "true": "voice_command",
+     "pred": "general_question",
+     "count": 1
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "general_question",
+     "research",
+     "coding_assistance",
+     "document_analysis",
+     "data_analysis",
+     "memory_retrieval",
+     "voice_command",
+     "tool_execution"
+    ],
+    "matrix": [
+     [
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     [
+      3,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      5,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+     ],
+     [
+      4,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0
+     ],
+     [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    ]
+   }
+  }
+ },
+ "torch": {
+  "seeds": [
+   7,
+   11,
+   23,
+   42,
+   101
+  ],
+  "runs": [
+   {
+    "seed": 7,
+    "best_epoch": 5,
+    "val_macro_f1": 0.5495,
+    "test_macro_f1": 0.3287,
+    "natural_macro_f1": 0.4654,
+    "natural_accuracy": 0.4844,
+    "history": [
+     {
+      "epoch": 1,
+      "train_loss": 2.054,
+      "val_macro_f1": 0.0953
+     },
+     {
+      "epoch": 2,
+      "train_loss": 1.9018,
+      "val_macro_f1": 0.2831
+     },
+     {
+      "epoch": 3,
+      "train_loss": 1.6055,
+      "val_macro_f1": 0.3746
+     },
+     {
+      "epoch": 4,
+      "train_loss": 1.1105,
+      "val_macro_f1": 0.4284
+     },
+     {
+      "epoch": 5,
+      "train_loss": 0.5717,
+      "val_macro_f1": 0.5495
+     },
+     {
+      "epoch": 6,
+      "train_loss": 0.2271,
+      "val_macro_f1": 0.5066
+     },
+     {
+      "epoch": 7,
+      "train_loss": 0.0788,
+      "val_macro_f1": 0.49
+     },
+     {
+      "epoch": 8,
+      "train_loss": 0.0391,
+      "val_macro_f1": 0.5087
+     },
+     {
+      "epoch": 9,
+      "train_loss": 0.0194,
+      "val_macro_f1": 0.4968
+     },
+     {
+      "epoch": 10,
+      "train_loss": 0.0157,
+      "val_macro_f1": 0.5114
+     },
+     {
+      "epoch": 11,
+      "train_loss": 0.0135,
+      "val_macro_f1": 0.5111
+     },
+     {
+      "epoch": 12,
+      "train_loss": 0.0089,
+      "val_macro_f1": 0.5418
+     },
+     {
+      "epoch": 13,
+      "train_loss": 0.0071,
+      "val_macro_f1": 0.5418
+     }
+    ]
+   },
+   {
+    "seed": 11,
+    "best_epoch": 13,
+    "val_macro_f1": 0.5507,
+    "test_macro_f1": 0.3116,
+    "natural_macro_f1": 0.5025,
+    "natural_accuracy": 0.5156,
+    "history": null
+   },
+   {
+    "seed": 23,
+    "best_epoch": 13,
+    "val_macro_f1": 0.6105,
+    "test_macro_f1": 0.3914,
+    "natural_macro_f1": 0.4906,
+    "natural_accuracy": 0.5,
+    "history": null
+   },
+   {
+    "seed": 42,
+    "best_epoch": 13,
+    "val_macro_f1": 0.4075,
+    "test_macro_f1": 0.5356,
+    "natural_macro_f1": 0.5026,
+    "natural_accuracy": 0.5156,
+    "history": null
+   },
+   {
+    "seed": 101,
+    "best_epoch": 11,
+    "val_macro_f1": 0.5292,
+    "test_macro_f1": 0.4543,
+    "natural_macro_f1": 0.4947,
+    "natural_accuracy": 0.5156,
+    "history": null
+   }
+  ],
+  "test_macro_f1": {
+   "mean": 0.4043,
+   "std": 0.0827
+  },
+  "natural_macro_f1": {
+   "mean": 0.4912,
+   "std": 0.0137
+  },
+  "first_seed_reports": {
+   "test": {
+    "n": 50,
+    "accuracy": 0.36,
+    "macro_f1": 0.3287,
+    "per_class": {
+     "general_question": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 6
+     },
+     "research": {
+      "precision": 0.273,
+      "recall": 0.5,
+      "f1": 0.353,
+      "support": 6
+     },
+     "coding_assistance": {
+      "precision": 0.2,
+      "recall": 0.125,
+      "f1": 0.154,
+      "support": 8
+     },
+     "document_analysis": {
+      "precision": 0.2,
+      "recall": 0.167,
+      "f1": 0.182,
+      "support": 6
+     },
+     "data_analysis": {
+      "precision": 0.5,
+      "recall": 0.429,
+      "f1": 0.462,
+      "support": 7
+     },
+     "memory_retrieval": {
+      "precision": 0.429,
+      "recall": 1.0,
+      "f1": 0.6,
+      "support": 6
+     },
+     "voice_command": {
+      "precision": 0.286,
+      "recall": 0.333,
+      "f1": 0.308,
+      "support": 6
+     },
+     "tool_execution": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1": 0.571,
+      "support": 5
+     }
+    },
+    "top_confusions": [
+     {
+      "true": "coding_assistance",
+      "pred": "research",
+      "count": 4
+     },
+     {
+      "true": "general_question",
+      "pred": "coding_assistance",
+      "count": 3
+     },
+     {
+      "true": "research",
+      "pred": "memory_retrieval",
+      "count": 3
+     },
+     {
+      "true": "document_analysis",
+      "pred": "memory_retrieval",
+      "count": 3
+     },
+     {
+      "true": "voice_command",
+      "pred": "document_analysis",
+      "count": 3
+     },
+     {
+      "true": "general_question",
+      "pred": "research",
+      "count": 2
+     }
+    ],
+    "confusion_matrix": {
+     "labels": [
+      "general_question",
+      "research",
+      "coding_assistance",
+      "document_analysis",
+      "data_analysis",
+      "memory_retrieval",
+      "voice_command",
+      "tool_execution"
+     ],
+     "matrix": [
+      [
+       0,
+       2,
+       3,
+       0,
+       0,
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       3,
+       0,
+       0,
+       0,
+       3,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       1,
+       0,
+       1,
+       2,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       1,
+       0,
+       3,
+       2,
+       0
+      ],
+      [
+       0,
+       1,
+       0,
+       1,
+       3,
+       0,
+       2,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       6,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0,
+       3,
+       0,
+       0,
+       2,
+       0
+      ],
+      [
+       0,
+       0,
+       1,
+       0,
+       2,
+       0,
+       0,
+       2
+      ]
+     ]
+    }
+   },
+   "natural_test": {
+    "n": 64,
+    "accuracy": 0.4844,
+    "macro_f1": 0.4654,
+    "per_class": {
+     "general_question": {
+      "precision": 0.25,
+      "recall": 0.125,
+      "f1": 0.167,
+      "support": 8
+     },
+     "research": {
+      "precision": 0.4,
+      "recall": 0.5,
+      "f1": 0.444,
+      "support": 8
+     },
+     "coding_assistance": {
+      "precision": 0.5,
+      "recall": 0.375,
+      "f1": 0.429,
+      "support": 8
+     },
+     "document_analysis": {
+      "precision": 0.5,
+      "recall": 0.625,
+      "f1": 0.556,
+      "support": 8
+     },
+     "data_analysis": {
+      "precision": 0.8,
+      "recall": 0.5,
+      "f1": 0.615,
+      "support": 8
+     },
+     "memory_retrieval": {
+      "precision": 0.5,
+      "recall": 0.875,
+      "f1": 0.636,
+      "support": 8
+     },
+     "voice_command": {
+      "precision": 0.385,
+      "recall": 0.625,
+      "f1": 0.476,
+      "support": 8
+     },
+     "tool_execution": {
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1": 0.4,
+      "support": 8
+     }
+    },
+    "top_confusions": [
+     {
+      "true": "tool_execution",
+      "pred": "voice_command",
+      "count": 4
+     },
+     {
+      "true": "general_question",
+      "pred": "document_analysis",
+      "count": 2
+     },
+     {
+      "true": "general_question",
+      "pred": "memory_retrieval",
+      "count": 2
+     },
+     {
+      "true": "general_question",
+      "pred": "voice_command",
+      "count": 2
+     },
+     {
+      "true": "coding_assistance",
+      "pred": "research",
+      "count": 2
+     },
+     {
+      "true": "document_analysis",
+      "pred": "research",
+      "count": 2
+     }
+    ],
+    "confusion_matrix": {
+     "labels": [
+      "general_question",
+      "research",
+      "coding_assistance",
+      "document_analysis",
+      "data_analysis",
+      "memory_retrieval",
+      "voice_command",
+      "tool_execution"
+     ],
+     "matrix": [
+      [
+       1,
+       1,
+       0,
+       2,
+       0,
+       2,
+       2,
+       0
+      ],
+      [
+       1,
+       4,
+       1,
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       1,
+       2,
+       3,
+       0,
+       1,
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       2,
+       1,
+       5,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       0,
+       0,
+       4,
+       1,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       1,
+       0,
+       7,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       1,
+       0,
+       2,
+       5,
+       0
+      ],
+      [
+       0,
+       0,
+       1,
+       0,
+       0,
+       1,
+       4,
+       2
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "decision": {
+  "natural_macro_f1": {
+   "rules": 0.3041,
+   "sklearn": 0.7097,
+   "torch": 0.4912,
+   "hybrid": 0.7704
+  },
+  "best": "hybrid",
+  "model_beats_rules_by": 0.4663
+ }
+}

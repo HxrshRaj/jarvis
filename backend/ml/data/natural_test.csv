@@ -1,0 +1,65 @@
+text,label,template,split
+why is the sky blue,general_question,,natural_test
+how do airplanes stay up,general_question,,natural_test
+whats the capital of australia and why isnt it sydney,general_question,,natural_test
+explain recursion like im five,general_question,,natural_test
+who was ada lovelace,general_question,,natural_test
+is it bad to crack your knuckles,general_question,,natural_test
+how many moons does jupiter have,general_question,,natural_test
+what causes the northern lights,general_question,,natural_test
+I need a well sourced overview of the evidence on creatine supplements,research,,natural_test
+what do peer reviewed studies say about meditation and anxiety,research,,natural_test
+collect articles and compare how different countries regulate AI,research,,natural_test
+write me a cited summary of the debate over nuclear power,research,,natural_test
+find out what the literature says about spaced repetition,research,,natural_test
+put together a reference backed brief on lab grown meat,research,,natural_test
+compare three sources on the effects of tariffs,research,,natural_test
+survey academic work on sleep and memory and list the papers,research,,natural_test
+my script crashes with an IndexError on line 40,coding_assistance,,natural_test
+can you rewrite this function so it isn't O(n^2),coding_assistance,,natural_test
+"npm build fails with module not found, help",coding_assistance,,natural_test
+write a bash one-liner to rename all jpgs,coding_assistance,,natural_test
+what does this SQL join actually return,coding_assistance,,natural_test
+why won't my docker container start,coding_assistance,,natural_test
+implement binary search in rust,coding_assistance,,natural_test
+fix the null pointer in my java service,coding_assistance,,natural_test
+tl;dr this pdf for me,document_analysis,,natural_test
+what are the termination clauses in the agreement i uploaded,document_analysis,,natural_test
+go through the minutes and tell me who owns each follow up,document_analysis,,natural_test
+does this lease mention pets anywhere,document_analysis,,natural_test
+give me the key figures from the quarterly report,document_analysis,,natural_test
+pull the deadlines out of this syllabus,document_analysis,,natural_test
+is there anything risky in this NDA,document_analysis,,natural_test
+outline the argument of the paper i attached,document_analysis,,natural_test
+average order value by month please,data_analysis,,natural_test
+are there any weird spikes in the traffic numbers,data_analysis,,natural_test
+how correlated are height and weight in my csv,data_analysis,,natural_test
+show a bar chart of units sold per region,data_analysis,,natural_test
+what's the 90th percentile of latency,data_analysis,,natural_test
+"which customers churned most, break it down by plan",data_analysis,,natural_test
+fit a line through these points and give me the slope,data_analysis,,natural_test
+how many rows have blank emails,data_analysis,,natural_test
+what was that restaurant I mentioned last month,memory_retrieval,,natural_test
+remind me what my wifi router brand was,memory_retrieval,,natural_test
+what's my usual order at the coffee place,memory_retrieval,,natural_test
+what did we agree on for the launch timeline,memory_retrieval,,natural_test
+"you saved something about my allergies, what was it",memory_retrieval,,natural_test
+which hotel did I say I preferred in Rome,memory_retrieval,,natural_test
+pull up the note I made on the quarterly goals,memory_retrieval,,natural_test
+do you still have my preferred meeting times,memory_retrieval,,natural_test
+can you say that out loud,voice_command,,natural_test
+quieter please,voice_command,,natural_test
+read me the last answer,voice_command,,natural_test
+stop talking,voice_command,,natural_test
+louder,voice_command,,natural_test
+speak slower,voice_command,,natural_test
+switch to the british voice,voice_command,,natural_test
+start listening to me now,voice_command,,natural_test
+what files are in this folder,tool_execution,,natural_test
+show me what's in config.json,tool_execution,,natural_test
+run the unit tests and tell me what broke,tool_execution,,natural_test
+grep the repo for FIXME,tool_execution,,natural_test
+list what changed in git,tool_execution,,natural_test
+open the readme,tool_execution,,natural_test
+display my last five tasks,tool_execution,,natural_test
+search every file for the word secret,tool_execution,,natural_test

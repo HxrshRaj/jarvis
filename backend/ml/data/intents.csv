@@ -1,0 +1,406 @@
+text,label,template,split
+tell me a fun fact about the stock market,general_question,tell me a fun fact about {a},train
+tell me a fun fact about the French revolution,general_question,tell me a fun fact about {a},train
+tell me a fun fact about black holes,general_question,tell me a fun fact about {a},train
+tell me a fun fact about stoicism,general_question,tell me a fun fact about {a},train
+how does photosynthesis work,general_question,how does {a} work,train
+how does inflation work,general_question,how does {a} work,train
+how does vaccines work,general_question,how does {a} work,train
+how does jazz music work,general_question,how does {a} work,train
+I'm curious about inflation,general_question,I'm curious about {a},train
+I'm curious about the stock market,general_question,I'm curious about {a},train
+I'm curious about jazz music,general_question,I'm curious about {a},train
+I'm curious about photosynthesis,general_question,I'm curious about {a},train
+define stoicism,general_question,define {a},train
+define black holes,general_question,define {a},train
+define photosynthesis,general_question,define {a},train
+define vaccines,general_question,define {a},train
+what's the difference between vaccines and stoicism,general_question,what's the difference between {a} and {b},train
+what's the difference between vaccines and the stock market,general_question,what's the difference between {a} and {b},train
+what's the difference between inflation and photosynthesis,general_question,what's the difference between {a} and {b},train
+what's the difference between black holes and the water cycle,general_question,what's the difference between {a} and {b},train
+why does inflation matter,general_question,why does {a} matter,train
+why does vaccines matter,general_question,why does {a} matter,train
+why does photosynthesis matter,general_question,why does {a} matter,train
+why does jazz music matter,general_question,why does {a} matter,train
+help me understand inflation,general_question,help me understand {a},train
+help me understand black holes,general_question,help me understand {a},train
+help me understand the stock market,general_question,help me understand {a},train
+help me understand vaccines,general_question,help me understand {a},train
+give me a quick overview of photosynthesis,general_question,give me a quick overview of {a},train
+give me a quick overview of vaccines,general_question,give me a quick overview of {a},train
+give me a quick overview of stoicism,general_question,give me a quick overview of {a},train
+give me a quick overview of inflation,general_question,give me a quick overview of {a},train
+what are the pros and cons of photosynthesis,general_question,what are the pros and cons of {a},train
+what are the pros and cons of the French revolution,general_question,what are the pros and cons of {a},train
+what are the pros and cons of the water cycle,general_question,what are the pros and cons of {a},train
+what are the pros and cons of black holes,general_question,what are the pros and cons of {a},train
+is the French revolution worth learning about,general_question,is {a} worth learning about,train
+is inflation worth learning about,general_question,is {a} worth learning about,train
+is jazz music worth learning about,general_question,is {a} worth learning about,train
+is stoicism worth learning about,general_question,is {a} worth learning about,train
+can you tell me about sleep cycles,general_question,can you tell me about {a},val
+can you tell me about climate change,general_question,can you tell me about {a},val
+can you tell me about the Roman empire,general_question,can you tell me about {a},val
+what is sleep cycles,general_question,what is {a},val
+what is climate change,general_question,what is {a},val
+what is the Roman empire,general_question,what is {a},val
+how would you describe volcanoes to a child,general_question,how would you describe {a} to a child,test
+how would you describe democracy to a child,general_question,how would you describe {a} to a child,test
+how would you describe tides to a child,general_question,how would you describe {a} to a child,test
+explain democracy to me in simple terms,general_question,explain {a} to me in simple terms,test
+explain volcanoes to me in simple terms,general_question,explain {a} to me in simple terms,test
+explain tides to me in simple terms,general_question,explain {a} to me in simple terms,test
+analyse the last decade of gene therapy research and cite it,research,analyse the last decade of {a} research and cite it,train
+analyse the last decade of four day work weeks research and cite it,research,analyse the last decade of {a} research and cite it,train
+analyse the last decade of carbon capture research and cite it,research,analyse the last decade of {a} research and cite it,train
+analyse the last decade of urban heat islands research and cite it,research,analyse the last decade of {a} research and cite it,train
+what does the evidence say about carbon capture,research,what does the evidence say about {a},train
+what does the evidence say about gene therapy,research,what does the evidence say about {a},train
+what does the evidence say about urban heat islands,research,what does the evidence say about {a},train
+what does the evidence say about four day work weeks,research,what does the evidence say about {a},train
+write a literature review on microplastics,research,write a literature review on {a},train
+write a literature review on urban heat islands,research,write a literature review on {a},train
+write a literature review on solid state batteries,research,write a literature review on {a},train
+write a literature review on battery recycling,research,write a literature review on {a},train
+survey the state of the art in battery recycling,research,survey the state of the art in {a},train
+survey the state of the art in intermittent fasting,research,survey the state of the art in {a},train
+survey the state of the art in carbon capture,research,survey the state of the art in {a},train
+survey the state of the art in microplastics,research,survey the state of the art in {a},train
+research solid state batteries and give me sources,research,research {a} and give me sources,train
+research carbon capture and give me sources,research,research {a} and give me sources,train
+research urban heat islands and give me sources,research,research {a} and give me sources,train
+research intermittent fasting and give me sources,research,research {a} and give me sources,train
+find credible sources about battery recycling,research,find credible sources about {a},train
+find credible sources about gene therapy,research,find credible sources about {a},train
+find credible sources about intermittent fasting,research,find credible sources about {a},train
+find credible sources about microplastics,research,find credible sources about {a},train
+compare the main approaches to urban heat islands with citations,research,compare the main approaches to {a} with citations,train
+compare the main approaches to solid state batteries with citations,research,compare the main approaches to {a} with citations,train
+compare the main approaches to battery recycling with citations,research,compare the main approaches to {a} with citations,train
+compare the main approaches to microplastics with citations,research,compare the main approaches to {a} with citations,train
+build a comparison of competing views on four day work weeks,research,build a comparison of competing views on {a},train
+build a comparison of competing views on remote work productivity,research,build a comparison of competing views on {a},train
+build a comparison of competing views on solid state batteries,research,build a comparison of competing views on {a},train
+build a comparison of competing views on carbon capture,research,build a comparison of competing views on {a},train
+prepare a sourced report on gene therapy,research,prepare a sourced report on {a},train
+prepare a sourced report on solid state batteries,research,prepare a sourced report on {a},train
+prepare a sourced report on urban heat islands,research,prepare a sourced report on {a},train
+prepare a sourced report on carbon capture,research,prepare a sourced report on {a},train
+gather perspectives on solid state batteries from different sources,research,gather perspectives on {a} from different sources,train
+gather perspectives on carbon capture from different sources,research,gather perspectives on {a} from different sources,train
+gather perspectives on intermittent fasting from different sources,research,gather perspectives on {a} from different sources,train
+gather perspectives on microplastics from different sources,research,gather perspectives on {a} from different sources,train
+look into the history and key studies of ocean acidification,research,look into the history and key studies of {a},val
+look into the history and key studies of universal basic income,research,look into the history and key studies of {a},val
+look into the history and key studies of vertical farming,research,look into the history and key studies of {a},val
+compile a briefing on vertical farming with references,research,compile a briefing on {a} with references,val
+compile a briefing on ocean acidification with references,research,compile a briefing on {a} with references,val
+compile a briefing on universal basic income with references,research,compile a briefing on {a} with references,val
+do a deep dive on digital education and cite where you got it,research,do a deep dive on {a} and cite where you got it,test
+do a deep dive on fusion energy and cite where you got it,research,do a deep dive on {a} and cite where you got it,test
+do a deep dive on coral restoration and cite where you got it,research,do a deep dive on {a} and cite where you got it,test
+investigate recent developments in fusion energy,research,investigate recent developments in {a},test
+investigate recent developments in digital education,research,investigate recent developments in {a},test
+investigate recent developments in coral restoration,research,investigate recent developments in {a},test
+optimise this Python loop,coding_assistance,optimise this {a} loop,train
+optimise this Kotlin loop,coding_assistance,optimise this {a} loop,train
+optimise this C++ loop,coding_assistance,optimise this {a} loop,train
+optimise this TypeScript loop,coding_assistance,optimise this {a} loop,train
+what's wrong with this PHP regex,coding_assistance,what's wrong with this {a} regex,train
+what's wrong with this TypeScript regex,coding_assistance,what's wrong with this {a} regex,train
+what's wrong with this Kotlin regex,coding_assistance,what's wrong with this {a} regex,train
+what's wrong with this Python regex,coding_assistance,what's wrong with this {a} regex,train
+write a Go function that reverses a linked list,coding_assistance,write a {a} function that reverses a linked list,train
+write a Java function that reverses a linked list,coding_assistance,write a {a} function that reverses a linked list,train
+write a Rust function that reverses a linked list,coding_assistance,write a {a} function that reverses a linked list,train
+write a C++ function that reverses a linked list,coding_assistance,write a {a} function that reverses a linked list,train
+explain what this Go snippet does,coding_assistance,explain what this {a} snippet does,train
+explain what this Ruby snippet does,coding_assistance,explain what this {a} snippet does,train
+explain what this Swift snippet does,coding_assistance,explain what this {a} snippet does,train
+explain what this Kotlin snippet does,coding_assistance,explain what this {a} snippet does,train
+why is my Kotlin build failing,coding_assistance,why is my {a} build failing,train
+why is my TypeScript build failing,coding_assistance,why is my {a} build failing,train
+why is my Rust build failing,coding_assistance,why is my {a} build failing,train
+why is my Go build failing,coding_assistance,why is my {a} build failing,train
+how do I fix a Kotlin in C++,coding_assistance,how do I fix a {b} in {a},train
+how do I fix a Swift in Kotlin,coding_assistance,how do I fix a {b} in {a},train
+how do I fix a PHP in Go,coding_assistance,how do I fix a {b} in {a},train
+how do I fix a PHP in TypeScript,coding_assistance,how do I fix a {b} in {a},train
+my Ruby tests are failing with a TypeScript,coding_assistance,my {a} tests are failing with a {b},train
+my Kotlin tests are failing with a Swift,coding_assistance,my {a} tests are failing with a {b},train
+my Go tests are failing with a PHP,coding_assistance,my {a} tests are failing with a {b},train
+my C++ tests are failing with a PHP,coding_assistance,my {a} tests are failing with a {b},train
+why does my C++ function throw a Python,coding_assistance,why does my {a} function throw a {b},train
+why does my PHP function throw a Ruby,coding_assistance,why does my {a} function throw a {b},train
+why does my C++ function throw a Go,coding_assistance,why does my {a} function throw a {b},train
+why does my Go function throw a Rust,coding_assistance,why does my {a} function throw a {b},train
+convert this Rust code to use async,coding_assistance,convert this {a} code to use async,train
+convert this TypeScript code to use async,coding_assistance,convert this {a} code to use async,train
+convert this PHP code to use async,coding_assistance,convert this {a} code to use async,train
+convert this Swift code to use async,coding_assistance,convert this {a} code to use async,train
+help me debug this Go stack trace,coding_assistance,help me debug this {a} stack trace,train
+help me debug this PHP stack trace,coding_assistance,help me debug this {a} stack trace,train
+help me debug this Python stack trace,coding_assistance,help me debug this {a} stack trace,train
+help me debug this Swift stack trace,coding_assistance,help me debug this {a} stack trace,train
+write unit tests for my Haskell parser,coding_assistance,write unit tests for my {a} parser,val
+write unit tests for my segfault parser,coding_assistance,write unit tests for my {a} parser,val
+write unit tests for my NullPointerException parser,coding_assistance,write unit tests for my {a} parser,val
+write unit tests for my Scala parser,coding_assistance,write unit tests for my {a} parser,val
+review my Haskell code for bugs,coding_assistance,review my {a} code for bugs,val
+review my segfault code for bugs,coding_assistance,review my {a} code for bugs,val
+review my NullPointerException code for bugs,coding_assistance,review my {a} code for bugs,val
+review my Scala code for bugs,coding_assistance,review my {a} code for bugs,val
+add type hints to my KeyError module,coding_assistance,add type hints to my {a} module,test
+add type hints to my off-by-one error module,coding_assistance,add type hints to my {a} module,test
+add type hints to my ImportError module,coding_assistance,add type hints to my {a} module,test
+add type hints to my race condition module,coding_assistance,add type hints to my {a} module,test
+refactor this race condition class to be cleaner,coding_assistance,refactor this {a} class to be cleaner,test
+refactor this KeyError class to be cleaner,coding_assistance,refactor this {a} class to be cleaner,test
+refactor this off-by-one error class to be cleaner,coding_assistance,refactor this {a} class to be cleaner,test
+refactor this ImportError class to be cleaner,coding_assistance,refactor this {a} class to be cleaner,test
+translate the key clauses of the PDF report into plain English,document_analysis,translate the key clauses of the {a} into plain English,train
+translate the key clauses of the research paper into plain English,document_analysis,translate the key clauses of the {a} into plain English,train
+translate the key clauses of the invoice into plain English,document_analysis,translate the key clauses of the {a} into plain English,train
+translate the key clauses of the whitepaper into plain English,document_analysis,translate the key clauses of the {a} into plain English,train
+check the contract for missing information,document_analysis,check the {a} for missing information,train
+check the PDF report for missing information,document_analysis,check the {a} for missing information,train
+check the policy document for missing information,document_analysis,check the {a} for missing information,train
+check the whitepaper for missing information,document_analysis,check the {a} for missing information,train
+compare the two versions of the policy document,document_analysis,compare the two versions of the {a},train
+compare the two versions of the PDF report,document_analysis,compare the two versions of the {a},train
+compare the two versions of the contract,document_analysis,compare the two versions of the {a},train
+compare the two versions of the meeting minutes,document_analysis,compare the two versions of the {a},train
+what does section three of the contract say,document_analysis,what does section three of the {a} say,train
+what does section three of the policy document say,document_analysis,what does section three of the {a} say,train
+what does section three of the whitepaper say,document_analysis,what does section three of the {a} say,train
+what does section three of the lease agreement say,document_analysis,what does section three of the {a} say,train
+highlight anything unusual in this meeting minutes,document_analysis,highlight anything unusual in this {a},train
+highlight anything unusual in this lease agreement,document_analysis,highlight anything unusual in this {a},train
+highlight anything unusual in this contract,document_analysis,highlight anything unusual in this {a},train
+highlight anything unusual in this policy document,document_analysis,highlight anything unusual in this {a},train
+list the obligations mentioned in this contract,document_analysis,list the obligations mentioned in this {a},train
+list the obligations mentioned in this policy document,document_analysis,list the obligations mentioned in this {a},train
+list the obligations mentioned in this PDF report,document_analysis,list the obligations mentioned in this {a},train
+list the obligations mentioned in this lease agreement,document_analysis,list the obligations mentioned in this {a},train
+find the names of all people in the whitepaper,document_analysis,find the names of all people in the {a},train
+find the names of all people in the PDF report,document_analysis,find the names of all people in the {a},train
+find the names of all people in the invoice,document_analysis,find the names of all people in the {a},train
+find the names of all people in the meeting minutes,document_analysis,find the names of all people in the {a},train
+extract the key dates from this invoice,document_analysis,extract the key dates from this {a},train
+extract the key dates from this lease agreement,document_analysis,extract the key dates from this {a},train
+extract the key dates from this meeting minutes,document_analysis,extract the key dates from this {a},train
+extract the key dates from this research paper,document_analysis,extract the key dates from this {a},train
+summarise the attached PDF report,document_analysis,summarise the attached {a},train
+summarise the attached contract,document_analysis,summarise the attached {a},train
+summarise the attached research paper,document_analysis,summarise the attached {a},train
+summarise the attached invoice,document_analysis,summarise the attached {a},train
+pull out all action items from the policy document,document_analysis,pull out all action items from the {a},train
+pull out all action items from the research paper,document_analysis,pull out all action items from the {a},train
+pull out all action items from the meeting minutes,document_analysis,pull out all action items from the {a},train
+pull out all action items from the contract,document_analysis,pull out all action items from the {a},train
+what's the conclusion of the thesis chapter,document_analysis,what's the conclusion of the {a},val
+what's the conclusion of the user manual,document_analysis,what's the conclusion of the {a},val
+what's the conclusion of the term sheet,document_analysis,what's the conclusion of the {a},val
+give me a one page summary of the user manual,document_analysis,give me a one page summary of the {a},val
+give me a one page summary of the term sheet,document_analysis,give me a one page summary of the {a},val
+give me a one page summary of the thesis chapter,document_analysis,give me a one page summary of the {a},val
+turn this proposal into bullet points,document_analysis,turn this {a} into bullet points,test
+turn this annual report into bullet points,document_analysis,turn this {a} into bullet points,test
+turn this press release into bullet points,document_analysis,turn this {a} into bullet points,test
+what are the main points of my annual report,document_analysis,what are the main points of my {a},test
+what are the main points of my press release,document_analysis,what are the main points of my {a},test
+what are the main points of my proposal,document_analysis,what are the main points of my {a},test
+is there a trend in sales over time,data_analysis,is there a trend in {a} over time,train
+is there a trend in rating over time,data_analysis,is there a trend in {a} over time,train
+is there a trend in price over time,data_analysis,is there a trend in {a} over time,train
+is there a trend in revenue over time,data_analysis,is there a trend in {a} over time,train
+clean the missing values in age,data_analysis,clean the missing values in {a},train
+clean the missing values in response time,data_analysis,clean the missing values in {a},train
+clean the missing values in revenue,data_analysis,clean the missing values in {a},train
+clean the missing values in price,data_analysis,clean the missing values in {a},train
+find outliers in the response time column,data_analysis,find outliers in the {a} column,train
+find outliers in the age column,data_analysis,find outliers in the {a} column,train
+find outliers in the revenue column,data_analysis,find outliers in the {a} column,train
+find outliers in the rating column,data_analysis,find outliers in the {a} column,train
+summarise the statistics of this dataset by response time,data_analysis,summarise the statistics of this dataset by {a},train
+summarise the statistics of this dataset by income,data_analysis,summarise the statistics of this dataset by {a},train
+summarise the statistics of this dataset by age,data_analysis,summarise the statistics of this dataset by {a},train
+summarise the statistics of this dataset by price,data_analysis,summarise the statistics of this dataset by {a},train
+what is the correlation between income and revenue,data_analysis,what is the correlation between {a} and {b},train
+what is the correlation between income and age,data_analysis,what is the correlation between {a} and {b},train
+what is the correlation between rating and income,data_analysis,what is the correlation between {a} and {b},train
+what is the correlation between income and response time,data_analysis,what is the correlation between {a} and {b},train
+compute the variance of temperature across the table,data_analysis,compute the variance of {a} across the table,train
+compute the variance of rating across the table,data_analysis,compute the variance of {a} across the table,train
+compute the variance of age across the table,data_analysis,compute the variance of {a} across the table,train
+compute the variance of income across the table,data_analysis,compute the variance of {a} across the table,train
+calculate the mean and standard deviation of temperature,data_analysis,calculate the mean and standard deviation of {a},train
+calculate the mean and standard deviation of age,data_analysis,calculate the mean and standard deviation of {a},train
+calculate the mean and standard deviation of price,data_analysis,calculate the mean and standard deviation of {a},train
+calculate the mean and standard deviation of income,data_analysis,calculate the mean and standard deviation of {a},train
+what percentage of rows have response time above average,data_analysis,what percentage of rows have {a} above average,train
+what percentage of rows have income above average,data_analysis,what percentage of rows have {a} above average,train
+what percentage of rows have sales above average,data_analysis,what percentage of rows have {a} above average,train
+what percentage of rows have rating above average,data_analysis,what percentage of rows have {a} above average,train
+plot a histogram of price,data_analysis,plot a histogram of {a},train
+plot a histogram of temperature,data_analysis,plot a histogram of {a},train
+plot a histogram of revenue,data_analysis,plot a histogram of {a},train
+plot a histogram of age,data_analysis,plot a histogram of {a},train
+group the rows by rating and total revenue,data_analysis,group the rows by {a} and total {b},train
+group the rows by response time and total temperature,data_analysis,group the rows by {a} and total {b},train
+group the rows by temperature and total age,data_analysis,group the rows by {a} and total {b},train
+group the rows by price and total sales,data_analysis,group the rows by {a} and total {b},train
+describe the distribution of attendance,data_analysis,describe the distribution of {a},val
+describe the distribution of duration,data_analysis,describe the distribution of {a},val
+describe the distribution of weight,data_analysis,describe the distribution of {a},val
+build a pivot table of weight by duration,data_analysis,build a pivot table of {a} by {b},val
+build a pivot table of weight by attendance,data_analysis,build a pivot table of {a} by {b},val
+build a pivot table of attendance by duration,data_analysis,build a pivot table of {a} by {b},val
+build a pivot table of duration by attendance,data_analysis,build a pivot table of {a} by {b},val
+run a regression of score on clicks,data_analysis,run a regression of {b} on {a},test
+run a regression of score on rainfall,data_analysis,run a regression of {b} on {a},test
+run a regression of rainfall on clicks,data_analysis,run a regression of {b} on {a},test
+run a regression of clicks on rainfall,data_analysis,run a regression of {b} on {a},test
+what's the median clicks in the spreadsheet,data_analysis,what's the median {a} in the spreadsheet,test
+what's the median rainfall in the spreadsheet,data_analysis,what's the median {a} in the spreadsheet,test
+what's the median score in the spreadsheet,data_analysis,what's the median {a} in the spreadsheet,test
+look up my notes about the move to Lisbon,memory_retrieval,look up my notes about {a},train
+look up my notes about my travel plans,memory_retrieval,look up my notes about {a},train
+look up my notes about my sister's birthday,memory_retrieval,look up my notes about {a},train
+look up my notes about the kitchen renovation,memory_retrieval,look up my notes about {a},train
+bring up what I saved regarding my travel plans,memory_retrieval,bring up what I saved regarding {a},train
+bring up what I saved regarding my sister's birthday,memory_retrieval,bring up what I saved regarding {a},train
+bring up what I saved regarding the marathon training,memory_retrieval,bring up what I saved regarding {a},train
+bring up what I saved regarding the move to Lisbon,memory_retrieval,bring up what I saved regarding {a},train
+what was it I said about my diet last week,memory_retrieval,what was it I said about {a} last week,train
+what was it I said about the marathon training last week,memory_retrieval,what was it I said about {a} last week,train
+what was it I said about my travel plans last week,memory_retrieval,what was it I said about {a} last week,train
+what was it I said about the kitchen renovation last week,memory_retrieval,what was it I said about {a} last week,train
+what did I tell you about the move to Lisbon,memory_retrieval,what did I tell you about {a},train
+what did I tell you about my travel plans,memory_retrieval,what did I tell you about {a},train
+what did I tell you about my sister's birthday,memory_retrieval,what did I tell you about {a},train
+what did I tell you about the kitchen renovation,memory_retrieval,what did I tell you about {a},train
+have I told you my the client deadline,memory_retrieval,have I told you my {b},train
+have I told you my my diet,memory_retrieval,have I told you my {b},train
+did I mention the client deadline earlier,memory_retrieval,did I mention {a} earlier,train
+did I mention the kitchen renovation earlier,memory_retrieval,did I mention {a} earlier,train
+did I mention my travel plans earlier,memory_retrieval,did I mention {a} earlier,train
+did I mention the budget meeting earlier,memory_retrieval,did I mention {a} earlier,train
+recall what I said about the client deadline yesterday,memory_retrieval,recall what I said about {a} yesterday,train
+recall what I said about the marathon training yesterday,memory_retrieval,recall what I said about {a} yesterday,train
+recall what I said about my sister's birthday yesterday,memory_retrieval,recall what I said about {a} yesterday,train
+recall what I said about the move to Lisbon yesterday,memory_retrieval,recall what I said about {a} yesterday,train
+which my diet did I say I liked,memory_retrieval,which {b} did I say I liked,train
+which the garden plan did I say I liked,memory_retrieval,which {b} did I say I liked,train
+what are my saved preferences for my sister's birthday,memory_retrieval,what are my saved preferences for {b},train
+what are my saved preferences for the budget meeting,memory_retrieval,what are my saved preferences for {b},train
+what are my saved preferences for my diet,memory_retrieval,what are my saved preferences for {b},train
+what are my saved preferences for the client deadline,memory_retrieval,what are my saved preferences for {b},train
+remind me what we decided about my travel plans,memory_retrieval,remind me what we decided about {a},train
+remind me what we decided about the client deadline,memory_retrieval,remind me what we decided about {a},train
+remind me what we decided about my diet,memory_retrieval,remind me what we decided about {a},train
+remind me what we decided about the kitchen renovation,memory_retrieval,remind me what we decided about {a},train
+do you remember my coffee order,memory_retrieval,do you remember my {b},val
+do you remember my favourite editor,memory_retrieval,do you remember my {b},val
+do you remember my my reading list,memory_retrieval,do you remember my {b},val
+what's in my memory about favourite editor,memory_retrieval,what's in my memory about {a},val
+what's in my memory about my reading list,memory_retrieval,what's in my memory about {a},val
+what's in my memory about coffee order,memory_retrieval,what's in my memory about {a},val
+retrieve my earlier note on preferred language,memory_retrieval,retrieve my earlier note on {a},test
+retrieve my earlier note on meeting times,memory_retrieval,retrieve my earlier note on {a},test
+retrieve my earlier note on work schedule,memory_retrieval,retrieve my earlier note on {a},test
+what do you know about my preferred language,memory_retrieval,what do you know about my {b},test
+what do you know about my work schedule,memory_retrieval,what do you know about my {b},test
+what do you know about my meeting times,memory_retrieval,what do you know about my {b},test
+play the instructions as audio,voice_command,play {a} as audio,train
+play the list as audio,voice_command,play {a} as audio,train
+play the result as audio,voice_command,play {a} as audio,train
+play the report as audio,voice_command,play {a} as audio,train
+stop reading my last message,voice_command,stop reading {a},train
+stop reading the result,voice_command,stop reading {a},train
+stop reading the instructions,voice_command,stop reading {a},train
+stop reading the summary,voice_command,stop reading {a},train
+dictate the list slowly,voice_command,dictate {a} slowly,train
+dictate the instructions slowly,voice_command,dictate {a} slowly,train
+dictate the report slowly,voice_command,dictate {a} slowly,train
+dictate the result slowly,voice_command,dictate {a} slowly,train
+repeat the summary aloud,voice_command,repeat {a} aloud,train
+repeat the instructions aloud,voice_command,repeat {a} aloud,train
+repeat the report aloud,voice_command,repeat {a} aloud,train
+repeat the headlines aloud,voice_command,repeat {a} aloud,train
+read my last message in a softer voice,voice_command,read {a} in a softer voice,train
+read the answer in a softer voice,voice_command,read {a} in a softer voice,train
+read the result in a softer voice,voice_command,read {a} in a softer voice,train
+read the summary in a softer voice,voice_command,read {a} in a softer voice,train
+can you read the summary to me please,voice_command,can you read {a} to me please,train
+can you read my last message to me please,voice_command,can you read {a} to me please,train
+can you read the headlines to me please,voice_command,can you read {a} to me please,train
+can you read the result to me please,voice_command,can you read {a} to me please,train
+narrate the list for me,voice_command,narrate {a} for me,train
+narrate the instructions for me,voice_command,narrate {a} for me,train
+narrate the summary for me,voice_command,narrate {a} for me,train
+narrate the result for me,voice_command,narrate {a} for me,train
+turn the volume up so I can hear the summary,voice_command,turn the volume up so I can hear {a},train
+turn the volume up so I can hear the report,voice_command,turn the volume up so I can hear {a},train
+turn the volume up so I can hear the instructions,voice_command,turn the volume up so I can hear {a},train
+turn the volume up so I can hear my last message,voice_command,turn the volume up so I can hear {a},train
+say the summary out loud,voice_command,say {a} out loud,train
+say the instructions out loud,voice_command,say {a} out loud,train
+say the list out loud,voice_command,say {a} out loud,train
+say the result out loud,voice_command,say {a} out loud,train
+speak the list to me,voice_command,speak {a} to me,train
+speak the result to me,voice_command,speak {a} to me,train
+speak the summary to me,voice_command,speak {a} to me,train
+speak the headlines to me,voice_command,speak {a} to me,train
+read the forecast aloud,voice_command,read {a} aloud,val
+read the recipe aloud,voice_command,read {a} aloud,val
+read the schedule aloud,voice_command,read {a} aloud,val
+pause after reading the recipe,voice_command,pause after reading {a},val
+pause after reading the forecast,voice_command,pause after reading {a},val
+pause after reading the schedule,voice_command,pause after reading {a},val
+mute while the reminder plays,voice_command,mute while {a} plays,test
+mute while the explanation plays,voice_command,mute while {a} plays,test
+mute while that paragraph plays,voice_command,mute while {a} plays,test
+talk me through the reminder using your voice,voice_command,talk me through {a} using your voice,test
+talk me through the explanation using your voice,voice_command,talk me through {a} using your voice,test
+talk me through that paragraph using your voice,voice_command,talk me through {a} using your voice,test
+search the project for the app folder,tool_execution,search the project for {a},train
+search the project for docs,tool_execution,search the project for {a},train
+search the project for lib,tool_execution,search the project for {a},train
+search the project for src,tool_execution,search the project for {a},train
+open lib and show me the contents,tool_execution,open {b} and show me the contents,train
+open docs and show me the contents,tool_execution,open {b} and show me the contents,train
+open scripts and show me the contents,tool_execution,open {b} and show me the contents,train
+open src and show me the contents,tool_execution,open {b} and show me the contents,train
+check what changed with git diff,tool_execution,check what changed with git diff,train
+execute the pytest command,tool_execution,execute the pytest command,train
+show me git status,tool_execution,show me git status,train
+find every file mentioning the app folder,tool_execution,find every file mentioning {a},train
+find every file mentioning the tests folder,tool_execution,find every file mentioning {a},train
+find every file mentioning the workspace,tool_execution,find every file mentioning {a},train
+find every file mentioning README.md,tool_execution,find every file mentioning {a},train
+run the test suite in the app folder,tool_execution,run the test suite in {a},train
+run the test suite in docs,tool_execution,run the test suite in {a},train
+run the test suite in the tests folder,tool_execution,run the test suite in {a},train
+run the test suite in the workspace,tool_execution,run the test suite in {a},train
+grep for lib in the workspace,tool_execution,grep for {a} in the workspace,train
+grep for README.md in the workspace,tool_execution,grep for {a} in the workspace,train
+grep for config.yaml in the workspace,tool_execution,grep for {a} in the workspace,train
+grep for docs in the workspace,tool_execution,grep for {a} in the workspace,train
+cat config.yaml,tool_execution,cat {b},train
+cat README.md,tool_execution,cat {b},train
+cat src,tool_execution,cat {b},train
+cat scripts,tool_execution,cat {b},train
+show the recent task history,tool_execution,show the recent task history,train
+read the file setup.cfg,tool_execution,read the file {b},val
+read the file notes.txt,tool_execution,read the file {b},val
+list the files in setup.cfg,tool_execution,list the files in {a},val
+list the files in notes.txt,tool_execution,list the files in {a},val
+list the files in package.json,tool_execution,list the files in {a},val
+list the files in main.py,tool_execution,list the files in {a},val
+show the directory tree of TODO,tool_execution,show the directory tree of {a},test
+show the directory tree of deprecated,tool_execution,show the directory tree of {a},test
+show the directory tree of handle_error,tool_execution,show the directory tree of {a},test
+show the directory tree of parse_config,tool_execution,show the directory tree of {a},test
+run npm test,tool_execution,run npm test,test
