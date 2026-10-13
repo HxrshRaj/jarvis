@@ -1,3 +1,4 @@
+import hashlib
 import logging
 import threading
 import time
@@ -59,9 +60,17 @@ def create_app() -> FastAPI:
 
     @app.middleware("http")
     async def limit_and_headers(request: Request, call_next):
-        key = request.client.host if request.client else "unknown"
-        if request.url.path.startswith("/api/") and not app.state.limiter.allow(key, get_settings().rate_limit_per_minute):
-            return JSONResponse({"detail": "Rate limit exceeded"}, status_code=429, headers={"Retry-After": "60"})
+        path, cfg = request.url.path, get_settings()
+        ip = request.client.host if request.client else "unknown"
+        if path.startswith("/api/") and request.method != "OPTIONS":  # CORS preflights are not API usage
+            if path.startswith("/api/v1/auth/"):  # brute-force protection: strict, per client IP
+                allowed = app.state.limiter.allow(f"auth:{ip}", cfg.auth_rate_limit_per_minute)
+            else:  # general usage: per bearer token (so one busy tab/NAT does not starve others), else per IP
+                auth = request.headers.get("authorization")
+                key = "tok:" + hashlib.sha256(auth.encode()).hexdigest()[:24] if auth else f"ip:{ip}"
+                allowed = app.state.limiter.allow(key, cfg.rate_limit_per_minute)
+            if not allowed:
+                return JSONResponse({"detail": "Rate limit exceeded"}, status_code=429, headers={"Retry-After": "60"})
         started = time.perf_counter()
         response = await call_next(request)
         route = request.scope.get("route")

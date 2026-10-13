@@ -350,3 +350,11 @@ def test_workspace_browser_respects_sandbox(client, auth, workspace):
     assert client.get(f"{API}/workspace/file?path=.env", headers=auth).status_code == 403
     assert client.get(f"{API}/workspace/file?path=../x", headers=auth).status_code == 403
     assert client.get(f"{API}/workspace/list?path=/", headers=auth).status_code == 403
+
+
+def test_document_text_endpoint_is_isolated_and_capped(client):
+    a, b = make_user(client, "a@example.com"), make_user(client, "b@example.com")
+    did = upload(client, a, "falcon.md", NOTES).json()["id"]
+    r = client.get(f"{API}/documents/{did}/text", headers=a).json()
+    assert "March 14" in r["text"] and r["truncated"] is False
+    assert client.get(f"{API}/documents/{did}/text", headers=b).status_code == 404

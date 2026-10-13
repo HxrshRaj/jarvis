@@ -68,6 +68,7 @@ def test_failing_tests_reported_truthfully(client, auth, workspace):
     t = wait_for(client, auth, tid, DONE)
     assert t["steps"][0]["output"]["exit_code"] == 1
     assert "exited with code 1" in t["summary"]
+    assert "did NOT pass" in t["summary"].splitlines()[0]
     assert "exit" in t["verification"]["checks"][0]["reason"].lower()
 
 

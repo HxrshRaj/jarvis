@@ -352,3 +352,45 @@ def workspace_file(path: str, _: User = Depends(current_user)):
     if b"\x00" in raw[:1024]:
         raise HTTPException(415, "binary files are not supported")
     return {"path": path, "content": raw[: s.max_file_bytes].decode("utf-8", errors="replace"), "truncated": len(raw) > s.max_file_bytes}
+
+
+# ---- evaluations ----------------------------------------------------------------------------------------
+@router.post("/evals/run")
+def run_evals(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Runs the deterministic suite (no network, no LLM). Results are stored and listed under /evals."""
+    from app.services import evals
+
+    out = evals.run_and_store(db)
+    audit(db, user.id, "eval.run", out["id"])
+    db.commit()
+    return out
+
+
+@router.get("/evals")
+def list_evals(limit: int = Query(10, ge=1, le=50), _: User = Depends(current_user), db: Session = Depends(get_db)):
+    from app.models import EvalRun
+
+    rows = db.scalars(select(EvalRun).order_by(EvalRun.created_at.desc()).limit(limit)).all()
+    return {"runs": [{"id": r.id, "name": r.name, "created_at": r.created_at.isoformat(), "config": r.config, "results": r.results}
+                     for r in rows]}
+
+
+@router.get("/ml/report")
+def ml_report(_: User = Depends(current_user)):
+    """The committed output of `python -m ml.train` (router experiment)."""
+    import json as _json
+
+    from app.ml.router import ARTIFACT_DIR
+
+    path = ARTIFACT_DIR.parent / "reports" / "results.json"
+    if not path.exists():
+        raise HTTPException(404, "No ML report found. Run `python -m ml.train` in backend/.")
+    return _json.loads(path.read_text(encoding="utf-8"))
+
+
+@router.get("/documents/{doc_id}/text")
+def document_text(doc_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Extracted text (what the indexer saw). Capped so a huge document cannot flood the browser."""
+    d = _own_doc(db, user, doc_id)
+    text = d.raw_text or ""
+    return {**_doc(d), "text": text[:50_000], "truncated": len(text) > 50_000}

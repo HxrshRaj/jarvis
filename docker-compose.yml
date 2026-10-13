@@ -1,0 +1,41 @@
+# Local development stack. Copy .env.example to .env and set the REQUIRED values first.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: jarvis
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: jarvis
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jarvis"]
+      interval: 5s
+      retries: 10
+    # not published to the host: only the backend (same compose network) needs the database
+
+  backend:
+    build: ./backend
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      JARVIS_DATABASE_URL: postgresql+psycopg://jarvis:${POSTGRES_PASSWORD}@db:5432/jarvis
+      JARVIS_SECRET_KEY: ${JARVIS_SECRET_KEY:?set JARVIS_SECRET_KEY in .env}
+      JARVIS_CORS_ORIGINS: '["http://localhost:3000"]'
+      JARVIS_LLM_PROVIDER: ${JARVIS_LLM_PROVIDER:-mock}
+      JARVIS_LLM_BASE_URL: ${JARVIS_LLM_BASE_URL:-https://api.openai.com/v1}
+      JARVIS_LLM_API_KEY: ${JARVIS_LLM_API_KEY:-}
+      JARVIS_LLM_MODEL: ${JARVIS_LLM_MODEL:-gpt-4o-mini}
+    volumes:
+      - ./workspace:/workspace   # the ONLY host directory tools can touch
+    ports: ["127.0.0.1:8000:8000"]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on: [backend]
+    ports: ["127.0.0.1:3000:3000"]
+
+volumes:
+  pgdata:

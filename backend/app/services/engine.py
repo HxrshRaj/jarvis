@@ -331,6 +331,10 @@ def _describe(step: TaskStep) -> str:
 def summarise(task: Task) -> str:
     """Deterministic report built only from recorded tool results — no model-invented claims."""
     lines = [f"Task {task.status.replace('_', ' ')}."]
+    failed_cmds = [s for s in task.steps if s.tool == "run_command" and s.status == StepStatus.SUCCEEDED.value
+                   and (s.output or {}).get("exit_code") not in (0, None)]
+    if failed_cmds:  # the tool ran, but the command itself did not pass: never let the headline imply otherwise
+        lines[0] += " WARNING: a command exited with a non-zero status, so the tests/command did NOT pass."
     for s in task.steps:
         if s.status == StepStatus.SUCCEEDED.value:
             lines.append(f"- Step {s.index + 1} ({s.tool}): {_describe(s)}")

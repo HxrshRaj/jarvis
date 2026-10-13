@@ -35,7 +35,9 @@ class Settings(BaseSettings):
     price_prompt_per_mtok: float = 0.0
     price_completion_per_mtok: float = 0.0
     router: str = "rules"  # "rules" | "model" (use trained classifier when confident)
-    rate_limit_per_minute: int = 120
+    router_model: str = "sklearn"  # "sklearn" | "torch"
+    rate_limit_per_minute: int = 600  # per bearer token (the UI polls task state every ~0.7s)
+    auth_rate_limit_per_minute: int = 20  # per client IP, login/register only
 
 
 @lru_cache

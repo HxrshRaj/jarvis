@@ -36,7 +36,8 @@ def init_engine(url: str | None = None):
     _SessionLocal = sessionmaker(_engine, expire_on_commit=False)
     from app import models  # noqa: F401  (register tables)
 
-    Base.metadata.create_all(_engine)
+    if url.startswith("sqlite"):  # dev/tests; Postgres schemas are managed by Alembic (`alembic upgrade head`)
+        Base.metadata.create_all(_engine)
     return _engine
 
 

@@ -13,6 +13,7 @@ from collections import Counter
 from dataclasses import dataclass
 
 DIM = 384
+SEM_GATE = 0.15  # min cosine to return a hit with zero lexical overlap (0.10 was tried: it degraded RAG ranking)
 _TOKEN = re.compile(r"[a-z0-9]+")
 _STOP = {"the", "a", "an", "of", "and", "or", "to", "in", "is", "are", "was", "it", "for", "on", "with", "as", "that",
          "this", "by", "be", "at", "from", "what", "which", "who", "how", "do", "does", "my", "me", "i"}
@@ -35,6 +36,8 @@ def embed(text: str) -> list[float]:
     feats: Counter[str] = Counter()
     for t in toks:
         feats["u:" + t] += 1.0
+        if len(t) >= 6:
+            feats["p:" + t[:5]] += 0.6  # shared prefix links inflections like allergies/allergic
         padded = f"#{t}#"
         for i in range(len(padded) - 2):
             feats["c:" + padded[i : i + 3]] += 0.3
@@ -126,7 +129,7 @@ def hybrid_search(query: str, docs: list[Candidate], k: int = 5, min_lexical: fl
     r_sem = {i: r for r, i in enumerate(sorted(sem, key=sem.get, reverse=True), 1)}
     hits = []
     for d in docs:
-        if lex[d.id] <= min_lexical and sem[d.id] < 0.15:  # no evidence either way: don't return noise
+        if lex[d.id] <= min_lexical and sem[d.id] < SEM_GATE:  # no evidence either way: don't return noise
             continue
         rrf = 1 / (60 + r_lex[d.id]) + 1 / (60 + r_sem[d.id])
         hits.append(Hit(d.id, rrf, lex[d.id], sem[d.id]))

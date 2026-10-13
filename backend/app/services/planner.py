@@ -71,11 +71,11 @@ def rule_plan(request: str) -> Plan:
         nums = [float(n) for n in _NUM.findall(text)]
         steps.append(PlanStep(tool="calculate_statistics", args={"values": nums},
                               description=f"Compute descriptive statistics for {len(nums)} values"))
-    if re.search(r"\b(run|execute)\b.*\b(tests?|pytest)\b|\bpytest\b", low):
+    if re.search(r"\bnpm test\b", low):  # check the more specific runner first
+        steps.append(PlanStep(tool="run_command", args={"argv": ["npm", "test"]}, description="Run npm test"))
+    elif re.search(r"\b(run|execute)\b.*\b(tests?|pytest)\b|\bpytest\b", low):
         steps.append(PlanStep(tool="run_command", args={"argv": ["python", "-m", "pytest", "-q"]},
                               description="Run the project's tests with pytest"))
-    elif re.search(r"\bnpm test\b", low):
-        steps.append(PlanStep(tool="run_command", args={"argv": ["npm", "test"]}, description="Run npm test"))
     if re.search(r"\bgit status\b", low):
         steps.append(PlanStep(tool="run_command", args={"argv": ["git", "status"]}, description="Show git status"))
     m = _PATH.search(text)
