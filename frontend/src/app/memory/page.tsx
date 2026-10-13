@@ -17,7 +17,12 @@ export default function MemoryPage() {
   const del = useMutation({ mutationFn: (id: string) => api.deleteMemory(id), onSuccess: refresh });
   const toggle = useMutation({
     mutationFn: (v: boolean) => api.setMemorySetting(v),
-    onMutate: (v) => { const prev = qc.getQueryData(["memsetting"]); qc.setQueryData(["memsetting"], { enabled: v }); return { prev }; }, // optimistic
+    onMutate: async (v) => { // optimistic; cancel in-flight fetches first so a stale response cannot overwrite it
+      await qc.cancelQueries({ queryKey: ["memsetting"] });
+      const prev = qc.getQueryData(["memsetting"]);
+      qc.setQueryData(["memsetting"], { enabled: v });
+      return { prev };
+    },
     onError: (_e, _v, ctx) => qc.setQueryData(["memsetting"], ctx?.prev),
     onSettled: () => qc.invalidateQueries({ queryKey: ["memsetting"] }),
   });
