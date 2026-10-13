@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #070b14;
+  --panel: rgba(18, 27, 46, 0.72);
+  --border: rgba(120, 160, 220, 0.16);
+  --text: #e6edf7;
+  --muted: #8a9bb8;
+  --cyan: #22d3ee;
+  --blue: #3b82f6;
+  --amber: #f5b342;
+  --danger: #f87171;
+  --ok: #4ade80;
+}
+
+html[data-theme="light"] {
+  & {
+    --bg: #eef3fa;
+    --panel: rgba(255, 255, 255, 0.85);
+    --border: rgba(30, 60, 110, 0.16);
+    --text: #0f1b2d;
+    --muted: #51627e;
+    --cyan: #0891b2;
+    --blue: #2563eb;
+    --amber: #b45309;
+    --danger: #dc2626;
+    --ok: #15803d;
+  }
+}
+
+body {
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(34, 211, 238, 0.09), transparent), var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+}
+.muted { color: var(--muted); }
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+.btn:hover:not(:disabled) { background: rgba(34, 211, 238, 0.12); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--cyan); color: #04121a; border-color: transparent; font-weight: 600; }
+.btn-primary:hover:not(:disabled) { background: var(--cyan); filter: brightness(1.1); }
+.input {
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  width: 100%;
+  color: var(--text);
+}
+.input:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
